@@ -55,9 +55,9 @@ export async function runShadcnAdd(components: string[]): Promise<void> {
 
   const pm = detectPackageManager();
   const npx = pm === "bun" ? "bunx" : pm === "pnpm" ? "pnpm dlx" : "npx";
-  const cmd = `${npx} shadcn@latest add ${components.join(" ")} -y`;
+  const cmd = `${npx} shadcn@latest add ${components.join(" ")} -y --overwrite`;
 
-  await execAsync(cmd);
+  await execAsync(cmd, { timeout: 60000 });
 }
 
 export function getProjectRoot(): string {

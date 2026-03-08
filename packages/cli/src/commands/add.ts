@@ -104,18 +104,8 @@ export async function add(componentNames: string[]) {
   }
 
   if (allShadcnDeps.size > 0) {
-    const spinner = ora("Installing shadcn/ui components...").start();
-    try {
-      await runShadcnAdd(Array.from(allShadcnDeps));
-      spinner.succeed("shadcn/ui components installed");
-    } catch (error) {
-      spinner.fail("Failed to install shadcn/ui components");
-      console.log(
-        chalk.yellow(
-          `Run manually: npx shadcn@latest add ${Array.from(allShadcnDeps).join(" ")}`
-        )
-      );
-    }
+    console.log(chalk.yellow("\nInstall shadcn/ui components first:"));
+    console.log(chalk.cyan(`  npx shadcn@latest add ${Array.from(allShadcnDeps).join(" ")}\n`));
   }
 
   if (allNpmDeps.size > 0) {
