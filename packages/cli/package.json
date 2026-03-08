@@ -1,6 +1,6 @@
 {
   "name": "zatoui",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "CLI for adding AI chat UI components to your project",
   "keywords": [
     "ai",
