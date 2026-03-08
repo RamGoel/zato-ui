@@ -2,6 +2,14 @@
  * @name Message Actions
  * @description Reusable action buttons for chat messages (copy, edit, retry, regenerate).
  * @category primitives
+ * @usage
+ * import { MessageActions } from "@/components/kit/message-actions"
+ * 
+ * <MessageActions
+ *   content="Message text to copy"
+ *   onEdit={() => console.log("edit")}
+ *   onRegenerate={() => console.log("regenerate")}
+ * />
  */
 "use client";
 

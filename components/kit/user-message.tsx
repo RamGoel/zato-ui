@@ -2,6 +2,17 @@
  * @name User Message
  * @description Chat bubble for user messages with avatar, timestamp, status, and actions.
  * @css Add to your globals.css: @keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+ * @usage
+ * import { UserMessage } from "@/components/kit/user-message"
+ * 
+ * <UserMessage
+ *   avatar="JD"
+ *   timestamp="2:45 PM"
+ *   status="sent"
+ *   onEdit={() => console.log("edit")}
+ * >
+ *   Hello, how can you help me today?
+ * </UserMessage>
  */
 "use client";
 

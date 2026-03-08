@@ -1,6 +1,17 @@
 /**
  * @name Agent Message
  * @description Chat bubble for AI/agent messages with avatar, timestamp, markdown support, and actions.
+ * @usage
+ * import { AgentMessage } from "@/components/kit/agent-message"
+ * 
+ * <AgentMessage
+ *   avatar="AI"
+ *   isStreaming={false}
+ *   timestamp="2:45 PM"
+ *   onRegenerate={() => console.log("regenerate")}
+ * >
+ *   Here's the answer with **markdown** support.
+ * </AgentMessage>
  */
 "use client";
 

@@ -6,6 +6,40 @@ import { CodeBlock } from "@/components/kit/code-block";
 import { MessageActions } from "@/components/kit/message-actions";
 import { UserMessage } from "@/components/kit/user-message";
 import { TypingIndicator } from "@/components/kit/typing-indicator";
+import { ChatInput } from "@/components/kit/chat-input";
+import { ImageIcon, FileText, Globe, Brush } from "lucide-react";
+
+function ChatInputPreview() {
+  const [webSearch, setWebSearch] = useState(false);
+  const [canvas, setCanvas] = useState(false);
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <p className="text-xs text-muted-foreground mb-2">Default</p>
+        <ChatInput 
+          onSubmit={(data) => alert(`Text: ${data.text}\nFiles: ${data.files?.length || 0}\nAudio: ${data.audio ? 'yes' : 'no'}`)} 
+        />
+      </div>
+      <div>
+        <p className="text-xs text-muted-foreground mb-2">With toggle modes (Web Search, Canvas)</p>
+        <ChatInput 
+          menuItems={[
+            { id: "web-search", label: "Web Search", icon: <Globe className="h-4 w-4" />, active: webSearch, onClick: () => setWebSearch(!webSearch) },
+            { id: "canvas", label: "Canvas", icon: <Brush className="h-4 w-4" />, active: canvas, onClick: () => setCanvas(!canvas) },
+            { id: "upload-image", label: "Upload image", icon: <ImageIcon className="h-4 w-4" />, onClick: () => alert("Upload image") },
+            { id: "upload-file", label: "Upload file", icon: <FileText className="h-4 w-4" />, onClick: () => alert("Upload file") },
+          ]}
+          onSubmit={(data) => alert(`Text: ${data.text}`)} 
+        />
+      </div>
+      <div>
+        <p className="text-xs text-muted-foreground mb-2">Disabled</p>
+        <ChatInput disabled placeholder="Chat disabled..." />
+      </div>
+    </div>
+  );
+}
 
 const fullMarkdownMessage = `Here's how to **center a div** using different methods:
 
@@ -185,4 +219,5 @@ export const previews: Record<string, React.ReactNode> = {
       </div>
     </div>
   ),
+  "chat-input": <ChatInputPreview />,
 };

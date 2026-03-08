@@ -49,6 +49,14 @@ export const registry: Record<string, ComponentDef> = {
     primitives: [],
     shadcn: ["button"],
   },
+  "chat-input": {
+    name: "Chat Input",
+    description: "ChatGPT-style input with attachments, voice, and action menu",
+    files: ["components/kit/chat-input.tsx"],
+    dependencies: [],
+    primitives: [],
+    shadcn: ["button", "dropdown-menu"],
+  },
 };
 
 export function getComponent(name: string): ComponentDef | undefined {

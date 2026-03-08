@@ -19,9 +19,12 @@ export default async function ComponentPage({
     notFound();
   }
 
-  const usageCode = `import { ${component.name.replace(/\s/g, "")} } from "@/components/ui/${slug}"
+  const componentName = component.name.replace(/\s/g, "");
+  const defaultUsage = `import { ${componentName} } from "@/components/kit/${slug}"
 
-<${component.name.replace(/\s/g, "")}>Your content</${component.name.replace(/\s/g, "")}>`;
+<${componentName}>Your content</${componentName}>`;
+
+  const usageCode = component.usage || defaultUsage;
 
   return (
     <div className="space-y-8">
@@ -35,7 +38,7 @@ export default async function ComponentPage({
       <div>
         <h2 className="text-xl font-semibold mb-4">Installation</h2>
         <p className="text-muted-foreground mb-4">
-          Copy to <code className="bg-muted px-1.5 py-0.5 rounded text-sm">components/ui/{component.file}</code>
+          Copy to <code className="bg-muted px-1.5 py-0.5 rounded text-sm">components/kit/{component.file}</code>
         </p>
         <CodeBlock language="tsx">{component.code}</CodeBlock>
       </div>

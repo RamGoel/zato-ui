@@ -1,6 +1,10 @@
 /**
  * @name Typing Indicator
  * @description Animated dots indicating the AI is thinking or typing.
+ * @usage
+ * import { TypingIndicator } from "@/components/kit/typing-indicator"
+ * 
+ * <TypingIndicator avatar="AI" />
  */
 "use client";
 

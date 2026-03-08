@@ -2,6 +2,14 @@
  * @name Code Block
  * @description Syntax highlighted code block with copy button.
  * @category primitives
+ * @usage
+ * import { CodeBlock } from "@/components/kit/code-block"
+ * 
+ * <CodeBlock language="typescript" showLineNumbers>
+ *   {`function greet(name: string) {
+ *   console.log(\`Hello, \${name}!\`);
+ * }`}
+ * </CodeBlock>
  */
 "use client";
 
