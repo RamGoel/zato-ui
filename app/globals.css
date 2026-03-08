@@ -1,26 +1,190 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* =============================================================================
+   AI-Kit Design System
+   ============================================================================= */
+
+/* Light Theme (default) */
+:root,
+[data-theme="light"] {
+  --surface-base: #ffffff;
+  --surface-raised: #fafafa;
+  --surface-overlay: #f5f5f5;
+
+  --text-primary: #0a0a0a;
+  --text-secondary: #525252;
+  --text-tertiary: #737373;
+  --text-muted: #a3a3a3;
+
+  --border-default: #e5e5e5;
+  --border-subtle: #f0f0f0;
+
+  --ai-primary: #6366f1;
+  --ai-primary-hover: #4f46e5;
+  --ai-primary-subtle: #eef2ff;
+  --ai-secondary: #8b5cf6;
+
+  --status-success: #22c55e;
+  --status-warning: #f59e0b;
+  --status-error: #ef4444;
+  --status-error-subtle: #fef2f2;
+
+  --interactive-hover: rgba(0, 0, 0, 0.04);
+  --interactive-focus: rgba(99, 102, 241, 0.4);
+
+  --message-user-bg: #6366f1;
+  --message-user-text: #ffffff;
+  --message-ai-bg: #f5f5f5;
+  --message-ai-text: #0a0a0a;
+  --message-system-bg: #fef3c7;
+  --message-system-text: #92400e;
+
+  --code-bg: #1e1e1e;
+  --code-text: #d4d4d4;
+  --code-keyword: #569cd6;
+  --code-string: #ce9178;
+  --code-function: #dcdcaa;
+
+  --streaming-dot: #6366f1;
+  --skeleton-base: #e5e5e5;
+  --skeleton-shimmer: #f5f5f5;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Dark Theme */
+[data-theme="dark"] {
+  --surface-base: #0a0a0a;
+  --surface-raised: #141414;
+  --surface-overlay: #1f1f1f;
+
+  --text-primary: #fafafa;
+  --text-secondary: #a3a3a3;
+  --text-tertiary: #737373;
+  --text-muted: #525252;
+
+  --border-default: #262626;
+  --border-subtle: #1a1a1a;
+
+  --ai-primary: #818cf8;
+  --ai-primary-hover: #6366f1;
+  --ai-primary-subtle: rgba(99, 102, 241, 0.15);
+  --ai-secondary: #a78bfa;
+
+  --status-success: #4ade80;
+  --status-warning: #fbbf24;
+  --status-error: #f87171;
+  --status-error-subtle: rgba(239, 68, 68, 0.15);
+
+  --interactive-hover: rgba(255, 255, 255, 0.06);
+  --interactive-focus: rgba(129, 140, 248, 0.4);
+
+  --message-user-bg: #6366f1;
+  --message-user-text: #ffffff;
+  --message-ai-bg: #1f1f1f;
+  --message-ai-text: #fafafa;
+  --message-system-bg: rgba(251, 191, 36, 0.15);
+  --message-system-text: #fbbf24;
+
+  --code-bg: #0d0d0d;
+  --code-text: #e5e5e5;
+
+  --skeleton-base: #262626;
+  --skeleton-shimmer: #404040;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Base */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--surface-base);
+  color: var(--text-primary);
+}
+
+/* =============================================================================
+   Animations
+   ============================================================================= */
+
+@keyframes typing-dot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.ai-animate-typing-dot { animation: typing-dot 1.4s ease infinite; }
+.ai-animate-shimmer {
+  background: linear-gradient(90deg, var(--skeleton-base) 0%, var(--skeleton-shimmer) 50%, var(--skeleton-base) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+.ai-animate-cursor-blink { animation: cursor-blink 1s step-end infinite; }
+.ai-animate-spin { animation: spin 1s linear infinite; }
+
+.ai-typing-dot-1 { animation-delay: 0ms; }
+.ai-typing-dot-2 { animation-delay: 200ms; }
+.ai-typing-dot-3 { animation-delay: 400ms; }
+
+/* =============================================================================
+   Utilities (required for dynamic theming - Tailwind v4 @theme is static only)
+   ============================================================================= */
+
+.bg-surface-base { background-color: var(--surface-base); }
+.bg-surface-raised { background-color: var(--surface-raised); }
+.bg-surface-overlay { background-color: var(--surface-overlay); }
+
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-muted { color: var(--text-muted); }
+
+.border-default { border-color: var(--border-default); }
+.border-subtle { border-color: var(--border-subtle); }
+
+.bg-ai-primary { background-color: var(--ai-primary); }
+.bg-ai-secondary { background-color: var(--ai-secondary); }
+.bg-ai-primary-subtle { background-color: var(--ai-primary-subtle); }
+.text-ai-primary { color: var(--ai-primary); }
+.hover\:bg-ai-primary-hover:hover { background-color: var(--ai-primary-hover); }
+
+.bg-status-success { background-color: var(--status-success); }
+.bg-status-warning { background-color: var(--status-warning); }
+.bg-status-error { background-color: var(--status-error); }
+.bg-status-error-subtle { background-color: var(--status-error-subtle); }
+.text-status-error { color: var(--status-error); }
+.hover\:bg-status-error:hover { background-color: var(--status-error); }
+
+.bg-interactive-hover { background-color: var(--interactive-hover); }
+.hover\:bg-interactive-hover:hover { background-color: var(--interactive-hover); }
+
+.bg-message-user { background-color: var(--message-user-bg); }
+.bg-message-ai { background-color: var(--message-ai-bg); }
+.bg-message-system { background-color: var(--message-system-bg); }
+.text-message-user { color: var(--message-user-text); }
+.text-message-ai { color: var(--message-ai-text); }
+.text-message-system { color: var(--message-system-text); }
+
+.bg-code { background-color: var(--code-bg); }
+.text-code { color: var(--code-text); }
+
+.bg-streaming-dot { background-color: var(--streaming-dot); }
+
+.ai-focus-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--surface-base), 0 0 0 4px var(--interactive-focus);
+}
+
+.ai-gradient-text {
+  background: linear-gradient(135deg, var(--ai-primary), var(--ai-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

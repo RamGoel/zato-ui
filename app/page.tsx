@@ -1,65 +1,128 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { cn, themes } from "@/lib/design-system";
+
+function ThemeSwitcher() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="flex gap-2">
+      {themes.map((t) => (
+        <button
+          key={t.name}
+          onClick={() => setTheme(t.name)}
+          className={cn(
+            "px-4 py-2 text-sm font-medium rounded-lg transition-colors",
+            theme === t.name
+              ? "bg-ai-primary text-white"
+              : "bg-surface-overlay text-secondary hover:bg-interactive-hover"
+          )}
+        >
+          {t.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="space-y-4">
+      <h2 className="text-lg font-semibold text-primary border-b border-subtle pb-2">{title}</h2>
+      {children}
+    </section>
+  );
+}
+
+function TypingIndicator() {
+  return (
+    <div className="flex items-center gap-1 px-4 py-3">
+      {[1, 2, 3].map((i) => (
+        <div
+          key={i}
+          className={cn("h-2 w-2 rounded-full bg-streaming-dot ai-animate-typing-dot", `ai-typing-dot-${i}`)}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      ))}
+    </div>
+  );
+}
+
+export default function DesignSystemDemo() {
+  return (
+    <div className="min-h-screen bg-surface-base">
+      <div className="mx-auto max-w-3xl px-6 py-12 space-y-12">
+        <header className="space-y-4">
+          <h1 className="text-3xl font-bold ai-gradient-text">AI Kit</h1>
+          <p className="text-secondary">Design system for AI-first components</p>
+          <ThemeSwitcher />
+        </header>
+
+        <Section title="Colors">
+          <div className="grid grid-cols-4 gap-3">
+            <div className="h-12 rounded-lg bg-ai-primary" />
+            <div className="h-12 rounded-lg bg-ai-secondary" />
+            <div className="h-12 rounded-lg bg-status-success" />
+            <div className="h-12 rounded-lg bg-status-error" />
+          </div>
+        </Section>
+
+        <Section title="Message Bubbles">
+          <div className="space-y-3 max-w-md">
+            <div className="flex justify-end">
+              <div className="px-4 py-2 rounded-2xl rounded-br-sm bg-message-user text-message-user">
+                How does this work?
+              </div>
+            </div>
+            <div className="flex justify-start">
+              <div className="px-4 py-2 rounded-2xl rounded-bl-sm bg-message-ai text-message-ai shadow-sm">
+                It uses semantic tokens that adapt to the theme.
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        <Section title="Loading States">
+          <div className="flex items-center gap-6">
+            <div className="bg-surface-overlay rounded-full shadow-sm">
+              <TypingIndicator />
+            </div>
+            <div className="h-6 w-6 border-2 border-ai-primary border-t-transparent rounded-full ai-animate-spin" />
+            <div className="h-4 w-32 rounded ai-animate-shimmer" />
+          </div>
+        </Section>
+
+        <Section title="Buttons">
+          <div className="flex gap-3">
+            <button className="px-4 py-2 rounded-lg bg-ai-primary text-white hover:bg-ai-primary-hover transition-colors ai-focus-ring">
+              Primary
+            </button>
+            <button className="px-4 py-2 rounded-lg bg-surface-overlay text-primary border border-default hover:bg-interactive-hover transition-colors ai-focus-ring">
+              Secondary
+            </button>
+            <button className="px-4 py-2 rounded-lg bg-status-error-subtle text-status-error hover:bg-status-error hover:text-white transition-colors ai-focus-ring">
+              Danger
+            </button>
+          </div>
+        </Section>
+
+        <Section title="Code">
+          <pre className="p-4 rounded-lg bg-code text-code text-sm font-mono overflow-x-auto">
+            <code>
+              <span style={{ color: "var(--code-keyword)" }}>const</span>{" "}
+              <span style={{ color: "var(--code-function)" }}>stream</span> ={" "}
+              <span style={{ color: "var(--code-keyword)" }}>await</span> fetch(
+              <span style={{ color: "var(--code-string)" }}>"/api/chat"</span>);
+            </code>
+          </pre>
+        </Section>
+      </div>
     </div>
   );
 }
