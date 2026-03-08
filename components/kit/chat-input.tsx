@@ -270,7 +270,7 @@ export function ChatInput({
 
   return (
     <div className={cn("flex flex-col", className)}>
-      <div className="rounded-2xl border border-border bg-background px-3 py-2 transition-all duration-200 ease-out">
+      <div className="rounded-2xl border border-border/50 bg-muted/50 px-4 py-3 transition-all duration-200 ease-out">
         {/* Mode badges */}
         {ModeBadges}
 

@@ -78,3 +78,41 @@ export async function hasUtilsFile(): Promise<boolean> {
   }
   return false;
 }
+
+export async function findGlobalsCss(): Promise<string | null> {
+  const root = getProjectRoot();
+  const paths = [
+    path.join(root, "app", "globals.css"),
+    path.join(root, "src", "app", "globals.css"),
+    path.join(root, "styles", "globals.css"),
+    path.join(root, "src", "styles", "globals.css"),
+  ];
+  for (const p of paths) {
+    if (await fileExists(p)) return p;
+  }
+  return null;
+}
+
+export async function appendCssToGlobals(cssSnippets: string[]): Promise<boolean> {
+  const globalsPath = await findGlobalsCss();
+  if (!globalsPath) return false;
+
+  const content = await fs.readFile(globalsPath, "utf-8");
+  const snippetsToAdd: string[] = [];
+
+  for (const snippet of cssSnippets) {
+    const keyframeName = snippet.match(/@keyframes\s+(\w+)/)?.[1];
+    if (keyframeName && content.includes(`@keyframes ${keyframeName}`)) {
+      continue;
+    }
+    if (!content.includes(snippet.trim())) {
+      snippetsToAdd.push(snippet);
+    }
+  }
+
+  if (snippetsToAdd.length === 0) return true;
+
+  const newContent = content.trimEnd() + "\n\n/* Added by zatoui */\n" + snippetsToAdd.join("\n\n") + "\n";
+  await fs.writeFile(globalsPath, newContent, "utf-8");
+  return true;
+}

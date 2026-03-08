@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getComponent, getAllComponents } from "@/lib/registry";
 import { CodeBlock } from "@/components/kit/code-block";
-import { PreviewWrapper } from "./preview-wrapper";
+import { PreviewWrapper } from "@/components/docs/preview-wrapper";
 
 export function generateStaticParams() {
   return getAllComponents().map((c) => ({ component: c.slug }));

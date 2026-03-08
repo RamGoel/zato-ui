@@ -6,6 +6,7 @@ export interface ComponentDef {
   devDependencies?: string[];
   primitives: string[];
   shadcn?: string[];
+  css?: string;
 }
 
 export const registry: Record<string, ComponentDef> = {
@@ -16,6 +17,10 @@ export const registry: Record<string, ComponentDef> = {
     dependencies: [],
     primitives: ["message-actions"],
     shadcn: ["avatar", "button"],
+    css: `@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}`,
   },
   "agent-message": {
     name: "Agent Message",
@@ -71,10 +76,12 @@ export function resolveDependencies(componentName: string): {
   components: string[];
   npmDeps: string[];
   shadcnDeps: string[];
+  cssSnippets: string[];
 } {
   const visited = new Set<string>();
   const npmDeps = new Set<string>();
   const shadcnDeps = new Set<string>();
+  const cssSnippets: string[] = [];
 
   function resolve(name: string) {
     if (visited.has(name)) return;
@@ -85,6 +92,7 @@ export function resolveDependencies(componentName: string): {
 
     component.dependencies.forEach((dep) => npmDeps.add(dep));
     component.shadcn?.forEach((dep) => shadcnDeps.add(dep));
+    if (component.css) cssSnippets.push(component.css);
     component.primitives.forEach((prim) => resolve(prim));
   }
 
@@ -94,5 +102,6 @@ export function resolveDependencies(componentName: string): {
     components: Array.from(visited),
     npmDeps: Array.from(npmDeps),
     shadcnDeps: Array.from(shadcnDeps),
+    cssSnippets,
   };
 }

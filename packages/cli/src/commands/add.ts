@@ -16,6 +16,7 @@ import {
   getProjectRoot,
   hasUtilsFile,
   fetchComponent,
+  appendCssToGlobals,
 } from "../utils.js";
 
 export async function add(componentNames: string[]) {
@@ -68,12 +69,14 @@ export async function add(componentNames: string[]) {
   const allComponents = new Set<string>();
   const allNpmDeps = new Set<string>();
   const allShadcnDeps = new Set<string>();
+  const allCssSnippets: string[] = [];
 
   for (const name of componentNames) {
     const resolved = resolveDependencies(name);
     resolved.components.forEach((c) => allComponents.add(c));
     resolved.npmDeps.forEach((d) => allNpmDeps.add(d));
     resolved.shadcnDeps.forEach((s) => allShadcnDeps.add(s));
+    allCssSnippets.push(...resolved.cssSnippets);
   }
 
   console.log();
@@ -152,6 +155,17 @@ export async function add(componentNames: string[]) {
   }
 
   spinner.succeed("Components added successfully!");
+
+  if (allCssSnippets.length > 0) {
+    const cssSpinner = ora("Adding required CSS...").start();
+    const cssAdded = await appendCssToGlobals(allCssSnippets);
+    if (cssAdded) {
+      cssSpinner.succeed("CSS added to globals.css");
+    } else {
+      cssSpinner.warn("Could not find globals.css - add CSS manually:");
+      allCssSnippets.forEach((snippet) => console.log(chalk.gray(snippet)));
+    }
+  }
 
   console.log();
   console.log(chalk.green("✓ Done!"));

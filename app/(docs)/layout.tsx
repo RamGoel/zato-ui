@@ -1,5 +1,5 @@
 import { getNavigation } from "@/lib/navigation";
-import { DocsLayoutClient } from "./layout-client";
+import { DocsLayout as DocsLayoutClient } from "@/components/docs/docs-layout";
 
 export default function DocsLayout({
   children,

@@ -68,7 +68,7 @@ function Sidebar({ navigation }: { navigation: Navigation }) {
   );
 }
 
-export function DocsLayoutClient({
+export function DocsLayout({
   children,
   navigation,
 }: {

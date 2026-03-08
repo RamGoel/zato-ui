@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Check, Copy } from "lucide-react";
 import { useState, useMemo, useCallback } from "react";
 import hljs from "highlight.js";
-import "highlight.js/styles/github-dark.min.css";
+import "highlight.js/styles/stackoverflow-dark.min.css";
 
 interface CodeBlockProps {
   children: string;
@@ -29,7 +29,22 @@ interface CodeBlockProps {
 
 const preStyle = "p-0 rounded-lg overflow-x-auto bg-zinc-950 text-zinc-50 text-sm font-mono";
 
+function highlightBash(code: string): string {
+  return code.replace(
+    /^(\s*)(npx|npm|yarn|pnpm|bunx|bun|git|cd|mkdir|rm|cp|mv|cat|echo|curl|wget)(\s+)(\S+)?(.*)$/gm,
+    (_, indent, cmd, space1, firstArg, rest) => {
+      const highlightedCmd = `<span class="hljs-built_in">${cmd}</span>`;
+      const highlightedArg = firstArg ? `<span class="hljs-string">${firstArg}</span>` : '';
+      const highlightedRest = rest ? `<span class="hljs-comment">${rest}</span>` : '';
+      return `${indent}${highlightedCmd}${space1}${highlightedArg}${highlightedRest}`;
+    }
+  );
+}
+
 function highlight(code: string, lang?: string) {
+  if (lang === "bash" || lang === "sh" || lang === "shell") {
+    return highlightBash(code);
+  }
   if (!lang) return hljs.highlightAuto(code).value;
   try {
     return hljs.highlight(code, { language: lang }).value;
