@@ -21,6 +21,13 @@ function parseMetadata(code: string): { name: string; description: string } {
   };
 }
 
+function stripComments(code: string): string {
+  return code
+    .replace(/\/\*\*[\s\S]*?\*\/\n?/g, "") // block comments
+    .replace(/^\s*\/\/.*\n?/gm, "") // single line comments on their own line
+    .trim();
+}
+
 function parseProps(code: string): { name: string; type: string }[] {
   const interfaceMatch = code.match(/interface \w+Props \{([^}]+)\}/);
   if (!interfaceMatch) return [];
@@ -47,7 +54,9 @@ export function getComponent(slug: string): ComponentMeta | null {
   const { name, description } = parseMetadata(code);
   const props = parseProps(code);
 
-  return { slug, name, description, file, code, props };
+  const cleanCode = stripComments(code);
+
+  return { slug, name, description, file, code: cleanCode, props };
 }
 
 export function getAllComponents(): ComponentMeta[] {

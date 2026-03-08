@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { ArrowRight, Github } from "lucide-react";
 import { getAllComponents } from "@/lib/registry";
+import { highlight } from "@/lib/highlight";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { CodeBlock } from "@/components/ui/code-block";
 import { UserMessage } from "@/components/kit/user-message";
-import { AiMessage } from "@/components/kit/ai-message";
 
-export default function HomePage() {
+export default async function HomePage() {
   const components = getAllComponents();
+  const installHtml = await highlight("npx shadcn@latest init", "bash");
 
   return (
     <div className="space-y-12">
@@ -51,13 +53,8 @@ export default function HomePage() {
         </div>
         <div className="p-6 space-y-4 bg-gradient-to-b from-muted/20 to-transparent">
           <UserMessage>Can you help me build a chat interface?</UserMessage>
-          <AiMessage>
-            Of course! I can help you create a beautiful chat UI. Let's start with the message components.
-          </AiMessage>
           <UserMessage>That sounds great!</UserMessage>
-          <AiMessage>
-            Perfect! The components are designed to be accessible and customizable. Just copy and paste.
-          </AiMessage>
+          <UserMessage>Thanks for the help!</UserMessage>
         </div>
       </div>
 
@@ -84,9 +81,7 @@ export default function HomePage() {
         <p className="text-muted-foreground mb-4">
           Make sure you have shadcn/ui set up in your project:
         </p>
-        <div className="rounded-lg bg-muted p-4 font-mono text-sm">
-          npx shadcn@latest init
-        </div>
+        <CodeBlock html={installHtml} />
       </div>
     </div>
   );

@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import { getComponent, getAllComponents } from "@/lib/registry";
 import { previews } from "@/lib/previews";
+import { highlight } from "@/lib/highlight";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CodeBlock } from "@/components/ui/code-block";
 
 export function generateStaticParams() {
   return getAllComponents().map((c) => ({ component: c.slug }));
@@ -20,6 +22,15 @@ export default async function ComponentPage({
   }
 
   const preview = previews[slug];
+  
+  const usageCode = `import { ${component.name.replace(/\s/g, "")} } from "@/components/ui/${slug}"
+
+<${component.name.replace(/\s/g, "")}>Your content</${component.name.replace(/\s/g, "")}>`;
+
+  const [codeHtml, usageHtml] = await Promise.all([
+    highlight(component.code),
+    highlight(usageCode),
+  ]);
 
   return (
     <div className="space-y-8">
@@ -42,18 +53,12 @@ export default async function ComponentPage({
         <p className="text-muted-foreground mb-4">
           Copy to <code className="bg-muted px-1.5 py-0.5 rounded text-sm">components/ui/{component.file}</code>
         </p>
-        <div className="rounded-lg bg-muted p-4 font-mono text-sm overflow-x-auto">
-          <pre>{component.code}</pre>
-        </div>
+        <CodeBlock html={codeHtml} />
       </div>
 
       <div>
         <h2 className="text-xl font-semibold mb-4">Usage</h2>
-        <div className="rounded-lg bg-muted p-4 font-mono text-sm overflow-x-auto">
-          <pre>{`import { ${component.name.replace(/\s/g, "")} } from "@/components/ui/${slug}"
-
-<${component.name.replace(/\s/g, "")}>Your content</${component.name.replace(/\s/g, "")}>`}</pre>
-        </div>
+        <CodeBlock html={usageHtml} />
       </div>
 
       {component.props.length > 0 && (
