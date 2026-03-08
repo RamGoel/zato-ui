@@ -12,6 +12,9 @@ interface TypingIndicatorProps {
   avatar?: string;
 }
 
+const dotBase = "w-2 h-2 bg-muted-foreground/60 rounded-full";
+const bounceAnim = "animate-[bounce_1s_ease-in-out_infinite]";
+
 export function TypingIndicator({ className, avatar }: TypingIndicatorProps) {
   const isUrl = avatar?.startsWith("http");
 
@@ -24,17 +27,11 @@ export function TypingIndicator({ className, avatar }: TypingIndicatorProps) {
         </Avatar>
       )}
 
-      <div
-        className={cn(
-          "rounded-xl rounded-bl-sm px-4 py-3",
-          "bg-muted",
-          className
-        )}
-      >
+      <div className={cn("rounded-xl rounded-bl-sm px-4 py-3 bg-muted", className)}>
         <div className="flex items-center gap-1">
-          <span className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-[bounce_1s_ease-in-out_infinite]" />
-          <span className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-[bounce_1s_ease-in-out_infinite_0.15s]" />
-          <span className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-[bounce_1s_ease-in-out_infinite_0.3s]" />
+          <span className={cn(dotBase, bounceAnim)} />
+          <span className={cn(dotBase, bounceAnim, "[animation-delay:0.15s]")} />
+          <span className={cn(dotBase, bounceAnim, "[animation-delay:0.3s]")} />
         </div>
       </div>
     </div>
