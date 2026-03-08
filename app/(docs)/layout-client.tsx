@@ -80,7 +80,7 @@ export function DocsLayoutClient({
       <header className="border-b sticky top-0 bg-background/80 backdrop-blur-sm z-50">
         <div className="mx-auto max-w-6xl flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2">
-            <Link href="/" className="text-lg font-semibold">aui-kit</Link>
+            <Link href="/" className="text-lg font-semibold">zato</Link>
             <Badge variant="secondary" className="text-xs">beta</Badge>
           </div>
           <div className="flex items-center gap-2">

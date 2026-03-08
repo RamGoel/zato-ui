@@ -4,7 +4,8 @@ import { CodeBlock } from "@/components/kit/code-block";
 import { HomePreview } from "./home-preview";
 
 export default function HomePage() {
-  const installCode = "npx shadcn@latest init";
+  const shadcnCode = "npx shadcn@latest init";
+  const zatoCode = "npx zato add user-message agent-message";
 
   return (
     <div className="space-y-12">
@@ -38,12 +39,20 @@ export default function HomePage() {
       </div>
 
       {/* Installation */}
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Installation</h2>
-        <p className="text-muted-foreground mb-4">
-          Make sure you have shadcn/ui set up in your project:
-        </p>
-        <CodeBlock language="bash">{installCode}</CodeBlock>
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold">Installation</h2>
+        <div>
+          <p className="text-muted-foreground mb-2">
+            1. Make sure you have shadcn/ui set up:
+          </p>
+          <CodeBlock language="bash">{shadcnCode}</CodeBlock>
+        </div>
+        <div>
+          <p className="text-muted-foreground mb-2">
+            2. Add components:
+          </p>
+          <CodeBlock language="bash">{zatoCode}</CodeBlock>
+        </div>
       </div>
 
       {/* Preview */}
