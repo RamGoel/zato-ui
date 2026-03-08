@@ -59,7 +59,7 @@ function parseProps(code: string): { name: string; type: string }[] {
     else if (char === "}" || char === ")") depth--;
     
     if (char === ";" && depth === 0) {
-      const propMatch = currentProp.match(/^\s*(\w+)(\?)?:\s*(.+)/s);
+      const propMatch = currentProp.match(/^\s*(\w+)(\?)?:\s*([\s\S]+)/);
       if (propMatch) {
         props.push({
           name: propMatch[1] + (propMatch[2] || ""),
@@ -73,7 +73,7 @@ function parseProps(code: string): { name: string; type: string }[] {
   }
   
   if (currentProp.trim()) {
-    const propMatch = currentProp.match(/^\s*(\w+)(\?)?:\s*(.+)/s);
+    const propMatch = currentProp.match(/^\s*(\w+)(\?)?:\s*([\s\S]+)/);
     if (propMatch) {
       props.push({
         name: propMatch[1] + (propMatch[2] || ""),
