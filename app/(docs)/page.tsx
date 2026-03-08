@@ -5,7 +5,7 @@ import { HomePreview } from "./home-preview";
 
 export default function HomePage() {
   const shadcnCode = "npx shadcn@latest init";
-  const zatoCode = "npx zato add user-message agent-message";
+  const zatoCode = "npx zatoui add user-message agent-message";
 
   return (
     <div className="space-y-12">
