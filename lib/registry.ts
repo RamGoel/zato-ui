@@ -7,17 +7,20 @@ export interface ComponentMeta {
   slug: string;
   name: string;
   description: string;
+  category: "components" | "primitives";
   file: string;
   code: string;
   props: { name: string; type: string }[];
 }
 
-function parseMetadata(code: string): { name: string; description: string } {
+function parseMetadata(code: string): { name: string; description: string; category: "components" | "primitives" } {
   const nameMatch = code.match(/@name\s+(.+)/);
   const descMatch = code.match(/@description\s+(.+)/);
+  const categoryMatch = code.match(/@category\s+(.+)/);
   return {
     name: nameMatch?.[1] || "Untitled",
     description: descMatch?.[1] || "",
+    category: (categoryMatch?.[1]?.trim() as "primitives") || "components",
   };
 }
 
@@ -51,12 +54,12 @@ export function getComponent(slug: string): ComponentMeta | null {
   if (!fs.existsSync(filePath)) return null;
   
   const code = fs.readFileSync(filePath, "utf-8");
-  const { name, description } = parseMetadata(code);
+  const { name, description, category } = parseMetadata(code);
   const props = parseProps(code);
 
   const cleanCode = stripComments(code);
 
-  return { slug, name, description, file, code: cleanCode, props };
+  return { slug, name, description, category, file, code: cleanCode, props };
 }
 
 export function getAllComponents(): ComponentMeta[] {

@@ -11,24 +11,27 @@ export interface Navigation {
 }
 
 export function getNavigation(): Navigation {
-  const components = getAllComponents();
+  const allComponents = getAllComponents();
 
-  const componentLinks = components.map((c) => ({
-    href: `/components/${c.slug}`,
-    name: c.name,
-  }));
+  const components = allComponents
+    .filter((c) => c.category === "components")
+    .map((c) => ({
+      href: `/components/${c.slug}`,
+      name: c.name,
+    }));
 
-  const upcomingComponents = [
-    { href: "#", name: "Chat Input", status: "soon" as const },
-    { href: "#", name: "Streaming Text", status: "soon" as const },
-    { href: "#", name: "Code Block", status: "soon" as const },
-    { href: "#", name: "Typing Indicator", status: "soon" as const },
-  ];
+  const primitives = allComponents
+    .filter((c) => c.category === "primitives")
+    .map((c) => ({
+      href: `/components/${c.slug}`,
+      name: c.name,
+    }));
 
   return {
     "Getting Started": [
       { href: "/", name: "Introduction" },
     ],
-    Components: [...componentLinks, ...upcomingComponents],
+    Components: components,
+    Primitives: primitives,
   };
 }

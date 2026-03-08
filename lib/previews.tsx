@@ -1,9 +1,94 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { AgentMessage } from "@/components/kit/agent-message";
 import { MessageActions } from "@/components/kit/message-actions";
 import { UserMessage } from "@/components/kit/user-message";
 
+function StreamingDemo() {
+  const fullText = "I can help you with that! Here's how you can center a div using flexbox: use display: flex, justify-content: center, and align-items: center on the parent container.";
+  const words = fullText.split(" ");
+  const [wordCount, setWordCount] = useState(0);
+  const [isStreaming, setIsStreaming] = useState(true);
+
+  useEffect(() => {
+    if (isStreaming && wordCount < words.length) {
+      const timeout = setTimeout(() => {
+        setWordCount(wordCount + 1);
+      }, 80);
+      return () => clearTimeout(timeout);
+    } else if (wordCount >= words.length) {
+      setIsStreaming(false);
+    }
+  }, [wordCount, words.length, isStreaming]);
+
+  const handleRegenerate = () => {
+    setWordCount(0);
+    setIsStreaming(true);
+  };
+
+  const text = words.slice(0, wordCount).join(" ");
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <p className="text-xs text-muted-foreground mb-2">Code block & inline code</p>
+        <AgentMessage avatar="AI" timestamp="2:45 PM" onRegenerate={() => {}}>
+          {"Here's how to center a div:\n\n```css\ndisplay: flex;\njustify-content: center;\nalign-items: center;\n```\n\nYou can also use **grid**: `place-items: center`"}
+        </AgentMessage>
+      </div>
+
+      <div>
+        <p className="text-xs text-muted-foreground mb-2">Lists</p>
+        <AgentMessage avatar="AI" timestamp="2:46 PM" onRegenerate={() => {}}>
+          {"Here are the steps:\n\n1. Install the package\n2. Import the component\n3. Use it in your app\n\nBenefits:\n- Easy to use\n- Fully customizable\n- Works with dark mode"}
+        </AgentMessage>
+      </div>
+
+      <div>
+        <p className="text-xs text-muted-foreground mb-2">Links & emphasis</p>
+        <AgentMessage avatar="AI" timestamp="2:47 PM" onRegenerate={() => {}}>
+          {"Check out the [documentation](https://example.com) for more details.\n\nThis is **bold**, this is *italic*, and this is ***both***."}
+        </AgentMessage>
+      </div>
+
+      <div>
+        <p className="text-xs text-muted-foreground mb-2">Table</p>
+        <AgentMessage avatar="AI" timestamp="2:48 PM" onRegenerate={() => {}}>
+          {`Here's a comparison:
+
+| Method | Browser Support | Complexity |
+|--------|-----------------|------------|
+| Flexbox | 98% | Low |
+| Grid | 95% | Medium |
+| Position | 100% | High |`}
+        </AgentMessage>
+      </div>
+
+      <div>
+        <p className="text-xs text-muted-foreground mb-2">Streaming</p>
+        <AgentMessage
+          avatar="AI"
+          isStreaming={isStreaming}
+          timestamp={!isStreaming ? "2:48 PM" : undefined}
+          onRegenerate={!isStreaming ? handleRegenerate : undefined}
+        >
+          {text || " "}
+        </AgentMessage>
+      </div>
+
+      <div>
+        <p className="text-xs text-muted-foreground mb-2">Error state</p>
+        <AgentMessage avatar="AI" isError onRegenerate={() => alert("Retrying...")}>
+          Failed to generate response. Please try again.
+        </AgentMessage>
+      </div>
+    </div>
+  );
+}
+
 export const previews: Record<string, React.ReactNode> = {
+  "agent-message": <StreamingDemo />,
   "message-actions": (
     <div className="space-y-6">
       <div className="flex justify-end group">

@@ -14,13 +14,13 @@ export function HomePreview() {
         <span className="text-xs text-muted-foreground ml-2">aui-kit demo</span>
       </div>
       <div className="p-6 space-y-4 bg-gradient-to-b from-muted/20 to-transparent">
-        <UserMessage avatar="JD" timestamp={new Date()} status="sent">
+        <UserMessage avatar="JD" timestamp="2:45 PM" status="sent">
           Can you help me build a chat interface?
         </UserMessage>
-        <UserMessage avatar="JD" timestamp={new Date()} status="sent">
+        <UserMessage avatar="JD" timestamp="2:46 PM" status="sent">
           That sounds great!
         </UserMessage>
-        <UserMessage avatar="JD" timestamp={new Date()} status="sent">
+        <UserMessage avatar="JD" timestamp="2:47 PM" status="sent">
           Thanks for the help!
         </UserMessage>
       </div>

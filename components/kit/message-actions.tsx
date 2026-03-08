@@ -1,6 +1,7 @@
 /**
  * @name Message Actions
  * @description Reusable action buttons for chat messages (copy, edit, retry, regenerate).
+ * @category primitives
  */
 "use client";
 
@@ -34,12 +35,12 @@ export function MessageActions({
   return (
     <div className="flex items-center gap-0.5">
       {onEdit && (
-        <Button variant="ghost" size="icon-xs" onClick={onEdit} aria-label="Edit">
+        <Button variant="ghost" size="icon-xs" onClick={onEdit} aria-label="Edit" className="cursor-pointer">
           <Pencil className="h-3 w-3" />
         </Button>
       )}
       
-      <Button variant="ghost" size="icon-xs" onClick={handleCopy} aria-label="Copy">
+      <Button variant="ghost" size="icon-xs" onClick={handleCopy} aria-label="Copy" className="cursor-pointer">
         {copied ? (
           <Check className="h-3 w-3 text-green-500" />
         ) : (
@@ -48,7 +49,7 @@ export function MessageActions({
       </Button>
 
       {onRegenerate && (
-        <Button variant="ghost" size="icon-xs" onClick={onRegenerate} aria-label="Regenerate">
+        <Button variant="ghost" size="icon-xs" onClick={onRegenerate} aria-label="Regenerate" className="cursor-pointer">
           <RefreshCw className="h-3 w-3" />
         </Button>
       )}
@@ -58,7 +59,7 @@ export function MessageActions({
           variant="ghost" 
           size="xs" 
           onClick={onRetry}
-          className="text-destructive hover:text-destructive h-auto py-0.5 px-1.5"
+          className="text-destructive hover:text-destructive h-auto py-0.5 px-1.5 cursor-pointer"
         >
           <RotateCcw className="h-3 w-3" />
           Retry
