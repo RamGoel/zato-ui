@@ -1,3 +1,7 @@
+/**
+ * @name User Message
+ * @description Chat bubble for user input, aligned to the right.
+ */
 import { cn } from "@/lib/utils";
 
 interface UserMessageProps {
