@@ -15,8 +15,8 @@ import {
   runShadcnAdd,
   getProjectRoot,
   hasUtilsFile,
+  fetchComponent,
 } from "../utils.js";
-import { componentSources } from "../components.js";
 
 export async function add(componentNames: string[]) {
   if (componentNames.length === 0) {
@@ -140,14 +140,15 @@ export async function add(componentNames: string[]) {
       continue;
     }
 
-    const content = componentSources[componentName];
-    if (!content) {
-      spinner.fail(`Component source not found: ${componentName}`);
-      continue;
+    try {
+      spinner.text = `Fetching ${componentName}...`;
+      const content = await fetchComponent(componentName);
+      await writeFile(destPath, content);
+      spinner.text = `Added ${componentName}.tsx`;
+    } catch (error) {
+      spinner.fail(`Failed to fetch ${componentName}`);
+      throw error;
     }
-
-    await writeFile(destPath, content);
-    spinner.text = `Added ${componentName}.tsx`;
   }
 
   spinner.succeed("Components added successfully!");

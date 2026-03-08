@@ -1,6 +1,6 @@
 {
   "name": "zatoui",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "CLI for adding AI chat UI components to your project",
   "keywords": [
     "ai",
@@ -15,7 +15,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ramgoel/zato-ui"
+    "url": "https://github.com/RamGoel/zato-ui"
   },
   "homepage": "https://zatoui.dev",
   "type": "module",
@@ -26,9 +26,8 @@
     "dist"
   ],
   "scripts": {
-    "prebuild": "npx tsx scripts/build-registry.ts",
     "build": "tsup src/index.ts --format esm --dts --clean",
-    "dev": "npx tsx scripts/build-registry.ts && tsup src/index.ts --format esm --watch"
+    "dev": "tsup src/index.ts --format esm --watch"
   },
   "dependencies": {
     "commander": "^12.1.0",

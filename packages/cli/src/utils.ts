@@ -5,7 +5,23 @@ import { promisify } from "util";
 
 const execAsync = promisify(exec);
 
-export async function writeFile(filePath: string, content: string): Promise<void> {
+const BASE_URL = "https://raw.githubusercontent.com/RamGoel/zato-ui/main";
+
+export async function fetchComponent(componentName: string): Promise<string> {
+  const url = `${BASE_URL}/components/kit/${componentName}.tsx`;
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${componentName}: ${response.statusText}`);
+  }
+
+  return response.text();
+}
+
+export async function writeFile(
+  filePath: string,
+  content: string,
+): Promise<void> {
   const dir = path.dirname(filePath);
   await fs.ensureDir(dir);
   await fs.writeFile(filePath, content, "utf-8");
