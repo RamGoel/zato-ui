@@ -11,7 +11,7 @@ export function HomePreview() {
           <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
           <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
         </div>
-        <span className="text-xs text-muted-foreground ml-2">aui-kit demo</span>
+        <span className="text-xs text-muted-foreground ml-2">zato demo</span>
       </div>
       <div className="p-6 space-y-4 bg-gradient-to-b from-muted/20 to-transparent">
         <UserMessage avatar="JD" timestamp="2:45 PM" status="sent">

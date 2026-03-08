@@ -15,7 +15,7 @@ program
 
 program
   .command("init")
-  .description("Initialize aui-kit in your project")
+  .description("Initialize zato in your project")
   .action(init);
 
 program

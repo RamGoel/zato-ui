@@ -27,7 +27,7 @@ export default function HomePage() {
             <ArrowRight className="h-4 w-4" />
           </Link>
           <a 
-            href="https://github.com" 
+            href="https://github.com/RamGoel/zato-ui" 
             target="_blank" 
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 border border-border px-4 py-2 rounded-lg text-sm font-medium hover:bg-muted transition-colors"

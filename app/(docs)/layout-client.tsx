@@ -85,7 +85,7 @@ export function DocsLayoutClient({
           </div>
           <div className="flex items-center gap-2">
             <a 
-              href="https://github.com" 
+              href="https://github.com/RamGoel/zato-ui" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center size-8 rounded-lg hover:bg-muted transition-colors"
