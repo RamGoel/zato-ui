@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { AgentMessage } from "@/components/kit/agent-message";
 import { CodeBlock } from "@/components/kit/code-block";
 import { MessageActions } from "@/components/kit/message-actions";
@@ -74,19 +74,32 @@ You can also use the shorthand \`place-items: center\` with *CSS Grid*.
 
 > **Pro tip:** Use \`margin: auto\` for simple cases!`;
 
+const AGENT_PREVIEW_KEY = "agent-message-streamed";
+
+const subscribeNoop = () => () => {};
+const getHasStreamed = () => sessionStorage.getItem(AGENT_PREVIEW_KEY) === "true";
+const getServerSnapshot = () => false;
+
 function AgentMessagePreview() {
   const words = fullMarkdownMessage.split(" ");
-  const [wordCount, setWordCount] = useState(0);
-  const [isStreaming, setIsStreaming] = useState(true);
+  const hasStreamedBefore = useSyncExternalStore(subscribeNoop, getHasStreamed, getServerSnapshot);
+  const initialCount = hasStreamedBefore ? words.length : 0;
+  const [wordCount, setWordCount] = useState(initialCount);
+  const [isStreaming, setIsStreaming] = useState(!hasStreamedBefore);
 
   useEffect(() => {
     if (isStreaming && wordCount < words.length) {
       const timeout = setTimeout(() => {
-        setWordCount(wordCount + 1);
+        setWordCount(prev => {
+          const next = prev + 1;
+          if (next >= words.length) {
+            setIsStreaming(false);
+            sessionStorage.setItem(AGENT_PREVIEW_KEY, "true");
+          }
+          return next;
+        });
       }, 50);
       return () => clearTimeout(timeout);
-    } else if (wordCount >= words.length) {
-      setIsStreaming(false);
     }
   }, [wordCount, words.length, isStreaming]);
 

@@ -5,19 +5,6 @@ import { promisify } from "util";
 
 const execAsync = promisify(exec);
 
-const BASE_URL = "https://raw.githubusercontent.com/ramgoel/aui-kit/main";
-
-export async function fetchComponent(filePath: string): Promise<string> {
-  const url = `${BASE_URL}/${filePath}`;
-  const response = await fetch(url);
-  
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${filePath}: ${response.statusText}`);
-  }
-  
-  return response.text();
-}
-
 export async function writeFile(filePath: string, content: string): Promise<void> {
   const dir = path.dirname(filePath);
   await fs.ensureDir(dir);
@@ -65,6 +52,13 @@ export function getProjectRoot(): string {
 }
 
 export async function hasUtilsFile(): Promise<boolean> {
-  const utilsPath = path.join(getProjectRoot(), "lib", "utils.ts");
-  return fileExists(utilsPath);
+  const root = getProjectRoot();
+  const paths = [
+    path.join(root, "lib", "utils.ts"),
+    path.join(root, "src", "lib", "utils.ts"),
+  ];
+  for (const p of paths) {
+    if (await fileExists(p)) return true;
+  }
+  return false;
 }

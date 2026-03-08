@@ -9,7 +9,6 @@ import {
   resolveDependencies,
 } from "../registry.js";
 import {
-  fetchComponent,
   writeFile,
   fileExists,
   installDependencies,
@@ -17,6 +16,7 @@ import {
   getProjectRoot,
   hasUtilsFile,
 } from "../utils.js";
+import { componentSources } from "../components.js";
 
 export async function add(componentNames: string[]) {
   if (componentNames.length === 0) {
@@ -104,8 +104,16 @@ export async function add(componentNames: string[]) {
   }
 
   if (allShadcnDeps.size > 0) {
-    console.log(chalk.yellow("\nInstall shadcn/ui components first:"));
-    console.log(chalk.cyan(`  npx shadcn@latest add ${Array.from(allShadcnDeps).join(" ")}\n`));
+    const spinner = ora("Installing shadcn/ui components...").start();
+    try {
+      await runShadcnAdd(Array.from(allShadcnDeps));
+      spinner.succeed("shadcn/ui components installed");
+    } catch (error) {
+      spinner.fail("Failed to install shadcn/ui components");
+      console.log(
+        chalk.yellow(`Run manually: npx shadcn@latest add ${Array.from(allShadcnDeps).join(" ")}`)
+      );
+    }
   }
 
   if (allNpmDeps.size > 0) {
@@ -125,25 +133,21 @@ export async function add(componentNames: string[]) {
   const root = getProjectRoot();
 
   for (const componentName of allComponents) {
-    const component = getComponent(componentName)!;
+    const destPath = path.join(root, "components/kit", `${componentName}.tsx`);
 
-    for (const file of component.files) {
-      const destPath = path.join(root, file);
-
-      if (await fileExists(destPath)) {
-        spinner.info(`${file} already exists, skipping`);
-        continue;
-      }
-
-      try {
-        const content = await fetchComponent(file);
-        await writeFile(destPath, content);
-        spinner.text = `Added ${file}`;
-      } catch (error) {
-        spinner.fail(`Failed to fetch ${file}`);
-        throw error;
-      }
+    if (await fileExists(destPath)) {
+      spinner.info(`${componentName}.tsx already exists, skipping`);
+      continue;
     }
+
+    const content = componentSources[componentName];
+    if (!content) {
+      spinner.fail(`Component source not found: ${componentName}`);
+      continue;
+    }
+
+    await writeFile(destPath, content);
+    spinner.text = `Added ${componentName}.tsx`;
   }
 
   spinner.succeed("Components added successfully!");
