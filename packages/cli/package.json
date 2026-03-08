@@ -1,7 +1,23 @@
 {
-  "name": "zato",
-  "version": "0.1.0",
+  "name": "zatoui",
+  "version": "0.1.1",
   "description": "CLI for adding AI chat UI components to your project",
+  "keywords": [
+    "ai",
+    "chat",
+    "ui",
+    "components",
+    "shadcn",
+    "react",
+    "nextjs"
+  ],
+  "author": "Ram Goel",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ramgoel/zato-ui"
+  },
+  "homepage": "https://zatoui.dev",
   "type": "module",
   "bin": {
     "zato": "./dist/index.js"

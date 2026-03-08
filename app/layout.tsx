@@ -14,7 +14,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "aui-kit",
+  title: "Zato",
   description: "AI-first components for shadcn/ui",
 };
 
