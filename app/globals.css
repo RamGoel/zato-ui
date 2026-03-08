@@ -125,3 +125,13 @@
     font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
   }
 }
+
+@keyframes shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+

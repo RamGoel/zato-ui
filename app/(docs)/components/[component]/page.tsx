@@ -1,9 +1,8 @@
 import { notFound } from "next/navigation";
 import { getComponent, getAllComponents } from "@/lib/registry";
-import { previews } from "@/lib/previews";
 import { highlight } from "@/lib/highlight";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CodeBlock } from "@/components/ui/code-block";
+import { PreviewWrapper } from "./preview-wrapper";
 
 export function generateStaticParams() {
   return getAllComponents().map((c) => ({ component: c.slug }));
@@ -21,8 +20,6 @@ export default async function ComponentPage({
     notFound();
   }
 
-  const preview = previews[slug];
-  
   const usageCode = `import { ${component.name.replace(/\s/g, "")} } from "@/components/ui/${slug}"
 
 <${component.name.replace(/\s/g, "")}>Your content</${component.name.replace(/\s/g, "")}>`;
@@ -39,14 +36,7 @@ export default async function ComponentPage({
         <p className="text-muted-foreground mt-2">{component.description}</p>
       </div>
 
-      {preview && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Preview</CardTitle>
-          </CardHeader>
-          <CardContent>{preview}</CardContent>
-        </Card>
-      )}
+      <PreviewWrapper slug={slug} />
 
       <div>
         <h2 className="text-xl font-semibold mb-4">Installation</h2>

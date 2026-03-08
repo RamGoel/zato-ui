@@ -4,7 +4,7 @@ import { getAllComponents } from "@/lib/registry";
 import { highlight } from "@/lib/highlight";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CodeBlock } from "@/components/ui/code-block";
-import { UserMessage } from "@/components/kit/user-message";
+import { HomePreview } from "./home-preview";
 
 export default async function HomePage() {
   const components = getAllComponents();
@@ -43,21 +43,7 @@ export default async function HomePage() {
       </div>
 
       {/* Preview */}
-      <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
-        <div className="flex items-center gap-2 px-4 py-3 border-b bg-muted/30">
-          <div className="flex gap-1.5">
-            <div className="h-2.5 w-2.5 rounded-full bg-red-400" />
-            <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
-            <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
-          </div>
-          <span className="text-xs text-muted-foreground ml-2">aui-kit demo</span>
-        </div>
-        <div className="p-6 space-y-4 bg-gradient-to-b from-muted/20 to-transparent">
-          <UserMessage>Can you help me build a chat interface?</UserMessage>
-          <UserMessage>That sounds great!</UserMessage>
-          <UserMessage>Thanks for the help!</UserMessage>
-        </div>
-      </div>
+      <HomePreview />
 
       {/* Components */}
       <div>
