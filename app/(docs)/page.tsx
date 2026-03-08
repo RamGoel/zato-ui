@@ -1,12 +1,9 @@
 import Link from "next/link";
 import { ArrowRight, Github } from "lucide-react";
-import { getAllComponents } from "@/lib/registry";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CodeBlock } from "@/components/kit/code-block";
 import { HomePreview } from "./home-preview";
 
 export default function HomePage() {
-  const components = getAllComponents();
   const installCode = "npx shadcn@latest init";
 
   return (
@@ -40,26 +37,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Preview */}
-      <HomePreview />
-
-      {/* Components */}
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Components</h2>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {components.map((component) => (
-            <Link key={component.slug} href={`/components/${component.slug}`}>
-              <Card className="hover:border-foreground/20 transition-colors h-full">
-                <CardHeader>
-                  <CardTitle className="text-base">{component.name}</CardTitle>
-                  <CardDescription>{component.description}</CardDescription>
-                </CardHeader>
-              </Card>
-            </Link>
-          ))}
-        </div>
-      </div>
-
       {/* Installation */}
       <div>
         <h2 className="text-xl font-semibold mb-4">Installation</h2>
@@ -68,6 +45,9 @@ export default function HomePage() {
         </p>
         <CodeBlock language="bash">{installCode}</CodeBlock>
       </div>
+
+      {/* Preview */}
+      <HomePreview />
     </div>
   );
 }

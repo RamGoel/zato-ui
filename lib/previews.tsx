@@ -5,6 +5,7 @@ import { AgentMessage } from "@/components/kit/agent-message";
 import { CodeBlock } from "@/components/kit/code-block";
 import { MessageActions } from "@/components/kit/message-actions";
 import { UserMessage } from "@/components/kit/user-message";
+import { TypingIndicator } from "@/components/kit/typing-indicator";
 
 const fullMarkdownMessage = `Here's how to **center a div** using different methods:
 
@@ -170,6 +171,18 @@ export const previews: Record<string, React.ReactNode> = {
       >
         This message failed to send.
       </UserMessage>
+    </div>
+  ),
+  "typing-indicator": (
+    <div className="space-y-4">
+      <div>
+        <p className="text-xs text-muted-foreground mb-2">With avatar</p>
+        <TypingIndicator avatar="AI" />
+      </div>
+      <div>
+        <p className="text-xs text-muted-foreground mb-2">Without avatar</p>
+        <TypingIndicator />
+      </div>
     </div>
   ),
 };

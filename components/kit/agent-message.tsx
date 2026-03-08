@@ -21,6 +21,19 @@ interface AgentMessageProps {
   onRegenerate?: () => void;
 }
 
+const proseClasses = [
+  "prose prose-sm dark:prose-invert max-w-none",
+  "prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0",
+  "prose-li:marker:text-muted-foreground",
+  "prose-h2:mt-3 prose-h2:mb-2 prose-h3:mt-2 prose-h3:mb-1",
+  "prose-blockquote:border-l-border prose-blockquote:my-2 prose-blockquote:pl-2",
+  "prose-pre:my-0 prose-pre:bg-transparent",
+  "prose-code:before:content-none prose-code:after:content-none",
+  "prose-code:bg-background/50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-[12px]",
+  "prose-table:my-2 prose-th:px-2 prose-th:py-1 prose-th:border-b prose-th:border-border",
+  "prose-td:px-2 prose-td:py-1 prose-thead:border-border prose-tr:border-border",
+].join(" ");
+
 export function AgentMessage({
   children,
   className,
@@ -53,7 +66,7 @@ export function AgentMessage({
           {isError ? (
             <p className="text-[13px]">{children}</p>
           ) : (
-            <div className="text-[13px] prose prose-sm dark:prose-invert prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0 prose-li:marker:text-muted-foreground prose-h2:mt-3 prose-h2:mb-2 prose-h3:mt-2 prose-h3:mb-1 prose-blockquote:border-l-border prose-blockquote:my-2 prose-blockquote:pl-2 prose-pre:my-0 prose-pre:bg-transparent prose-code:before:content-none prose-code:after:content-none prose-code:bg-background/50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-[12px] prose-table:my-2 prose-th:px-2 prose-th:py-1 prose-th:border-b prose-th:border-border prose-td:px-2 prose-td:py-1 prose-thead:border-border prose-tr:border-border max-w-none">
+            <div className={cn("text-[13px]", proseClasses)}>
               <ReactMarkdown 
                 remarkPlugins={[remarkGfm]} 
                 components={{
