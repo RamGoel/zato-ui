@@ -8,7 +8,8 @@ import { UserMessage } from "@/components/kit/user-message";
 
 export default async function HomePage() {
   const components = getAllComponents();
-  const installHtml = await highlight("npx shadcn@latest init", "bash");
+  const installCode = "npx shadcn@latest init";
+  const installHtml = await highlight(installCode, "bash");
 
   return (
     <div className="space-y-12">
@@ -81,7 +82,7 @@ export default async function HomePage() {
         <p className="text-muted-foreground mb-4">
           Make sure you have shadcn/ui set up in your project:
         </p>
-        <CodeBlock html={installHtml} />
+        <CodeBlock html={installHtml} code={installCode} />
       </div>
     </div>
   );

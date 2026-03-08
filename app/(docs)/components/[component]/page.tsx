@@ -53,12 +53,12 @@ export default async function ComponentPage({
         <p className="text-muted-foreground mb-4">
           Copy to <code className="bg-muted px-1.5 py-0.5 rounded text-sm">components/ui/{component.file}</code>
         </p>
-        <CodeBlock html={codeHtml} />
+        <CodeBlock html={codeHtml} code={component.code} />
       </div>
 
       <div>
         <h2 className="text-xl font-semibold mb-4">Usage</h2>
-        <CodeBlock html={usageHtml} />
+        <CodeBlock html={usageHtml} code={usageCode} />
       </div>
 
       {component.props.length > 0 && (
