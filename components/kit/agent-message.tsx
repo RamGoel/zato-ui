@@ -6,13 +6,10 @@
 
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { MessageActions } from "./message-actions";
+import { CodeBlock } from "./code-block";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import rehypeHighlight from "rehype-highlight";
-import { Check, Copy } from "lucide-react";
-import { useState } from "react";
 
 interface AgentMessageProps {
   children: string;
@@ -22,38 +19,6 @@ interface AgentMessageProps {
   isStreaming?: boolean;
   isError?: boolean;
   onRegenerate?: () => void;
-}
-
-function CodeBlock({ children, className, ...props }: React.HTMLAttributes<HTMLPreElement>) {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = () => {
-    const code = (children as React.ReactElement)?.props?.children || "";
-    navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <div className="relative group/code">
-      <Button
-        variant="ghost"
-        size="icon-xs"
-        onClick={handleCopy}
-        className="absolute right-1 top-1 opacity-0 group-hover/code:opacity-100 transition-opacity cursor-pointer"
-        aria-label="Copy code"
-      >
-        {copied ? (
-          <Check className="h-3 w-3 text-green-500" />
-        ) : (
-          <Copy className="h-3 w-3" />
-        )}
-      </Button>
-      <pre className={cn("!p-2 !rounded-md overflow-x-auto !bg-background/80", className)} {...props}>
-        {children}
-      </pre>
-    </div>
-  );
 }
 
 export function AgentMessage({
@@ -88,12 +53,27 @@ export function AgentMessage({
           {isError ? (
             <p className="text-[13px]">{children}</p>
           ) : (
-            <div className="text-[13px] prose prose-sm dark:prose-invert prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0 prose-li:marker:text-muted-foreground prose-pre:my-2 prose-code:before:content-none prose-code:after:content-none prose-code:bg-background/50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-[12px] prose-table:my-2 prose-th:px-2 prose-th:py-1 prose-th:border-b prose-th:border-border prose-td:px-2 prose-td:py-1 prose-thead:border-border prose-tr:border-border max-w-none">
+            <div className="text-[13px] prose prose-sm dark:prose-invert prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0 prose-li:marker:text-muted-foreground prose-h2:mt-3 prose-h2:mb-2 prose-h3:mt-2 prose-h3:mb-1 prose-blockquote:border-l-border prose-blockquote:my-2 prose-blockquote:pl-2 prose-pre:my-0 prose-pre:bg-transparent prose-code:before:content-none prose-code:after:content-none prose-code:bg-background/50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-[12px] prose-table:my-2 prose-th:px-2 prose-th:py-1 prose-th:border-b prose-th:border-border prose-td:px-2 prose-td:py-1 prose-thead:border-border prose-tr:border-border max-w-none">
               <ReactMarkdown 
                 remarkPlugins={[remarkGfm]} 
-                rehypePlugins={[rehypeHighlight]}
                 components={{
-                  pre: CodeBlock,
+                  code({ className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || "");
+                    const isInline = !match;
+                    
+                    if (isInline) {
+                      return <code className={className} {...props}>{children}</code>;
+                    }
+                    
+                    return (
+                      <CodeBlock language={match[1]} className="my-2 text-xs">
+                        {String(children).replace(/\n$/, "")}
+                      </CodeBlock>
+                    );
+                  },
+                  pre({ children }) {
+                    return <>{children}</>;
+                  },
                 }}
               >
                 {isStreaming ? children + "▍" : children}

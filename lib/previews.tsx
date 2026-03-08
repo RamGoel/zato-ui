@@ -2,12 +2,45 @@
 
 import { useState, useEffect } from "react";
 import { AgentMessage } from "@/components/kit/agent-message";
+import { CodeBlock } from "@/components/kit/code-block";
 import { MessageActions } from "@/components/kit/message-actions";
 import { UserMessage } from "@/components/kit/user-message";
 
-function StreamingDemo() {
-  const fullText = "I can help you with that! Here's how you can center a div using flexbox: use display: flex, justify-content: center, and align-items: center on the parent container.";
-  const words = fullText.split(" ");
+const fullMarkdownMessage = `Here's how to **center a div** using different methods:
+
+## Using Flexbox
+
+\`\`\`css
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+\`\`\`
+
+You can also use the shorthand \`place-items: center\` with *CSS Grid*.
+
+### Steps to implement:
+
+1. Add a container element
+2. Apply the CSS above
+3. Your content is now centered!
+
+**Benefits:**
+- Easy to use
+- Works with *any* content
+- Great [browser support](https://caniuse.com/flexbox)
+
+| Method | Support | Complexity |
+|--------|---------|------------|
+| Flexbox | 98% | Low |
+| Grid | 95% | Medium |
+| Position | 100% | High |
+
+> **Pro tip:** Use \`margin: auto\` for simple cases!`;
+
+function AgentMessagePreview() {
+  const words = fullMarkdownMessage.split(" ");
   const [wordCount, setWordCount] = useState(0);
   const [isStreaming, setIsStreaming] = useState(true);
 
@@ -15,7 +48,7 @@ function StreamingDemo() {
     if (isStreaming && wordCount < words.length) {
       const timeout = setTimeout(() => {
         setWordCount(wordCount + 1);
-      }, 80);
+      }, 50);
       return () => clearTimeout(timeout);
     } else if (wordCount >= words.length) {
       setIsStreaming(false);
@@ -32,45 +65,11 @@ function StreamingDemo() {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-xs text-muted-foreground mb-2">Code block & inline code</p>
-        <AgentMessage avatar="AI" timestamp="2:45 PM" onRegenerate={() => {}}>
-          {"Here's how to center a div:\n\n```css\ndisplay: flex;\njustify-content: center;\nalign-items: center;\n```\n\nYou can also use **grid**: `place-items: center`"}
-        </AgentMessage>
-      </div>
-
-      <div>
-        <p className="text-xs text-muted-foreground mb-2">Lists</p>
-        <AgentMessage avatar="AI" timestamp="2:46 PM" onRegenerate={() => {}}>
-          {"Here are the steps:\n\n1. Install the package\n2. Import the component\n3. Use it in your app\n\nBenefits:\n- Easy to use\n- Fully customizable\n- Works with dark mode"}
-        </AgentMessage>
-      </div>
-
-      <div>
-        <p className="text-xs text-muted-foreground mb-2">Links & emphasis</p>
-        <AgentMessage avatar="AI" timestamp="2:47 PM" onRegenerate={() => {}}>
-          {"Check out the [documentation](https://example.com) for more details.\n\nThis is **bold**, this is *italic*, and this is ***both***."}
-        </AgentMessage>
-      </div>
-
-      <div>
-        <p className="text-xs text-muted-foreground mb-2">Table</p>
-        <AgentMessage avatar="AI" timestamp="2:48 PM" onRegenerate={() => {}}>
-          {`Here's a comparison:
-
-| Method | Browser Support | Complexity |
-|--------|-----------------|------------|
-| Flexbox | 98% | Low |
-| Grid | 95% | Medium |
-| Position | 100% | High |`}
-        </AgentMessage>
-      </div>
-
-      <div>
-        <p className="text-xs text-muted-foreground mb-2">Streaming</p>
+        <p className="text-xs text-muted-foreground mb-2">Streaming with markdown</p>
         <AgentMessage
           avatar="AI"
           isStreaming={isStreaming}
-          timestamp={!isStreaming ? "2:48 PM" : undefined}
+          timestamp={!isStreaming ? "2:45 PM" : undefined}
           onRegenerate={!isStreaming ? handleRegenerate : undefined}
         >
           {text || " "}
@@ -87,8 +86,34 @@ function StreamingDemo() {
   );
 }
 
+const jsCode = `function greet(name) {
+  console.log(\`Hello, \${name}!\`);
+}
+
+greet("World");`;
+
+const cssCode = `display: flex;
+justify-content: center;
+align-items: center;`;
+
 export const previews: Record<string, React.ReactNode> = {
-  "agent-message": <StreamingDemo />,
+  "agent-message": <AgentMessagePreview />,
+  "code-block": (
+    <div className="space-y-4">
+      <div>
+        <p className="text-xs text-muted-foreground mb-2">JavaScript</p>
+        <CodeBlock language="javascript">{jsCode}</CodeBlock>
+      </div>
+      <div>
+        <p className="text-xs text-muted-foreground mb-2">CSS</p>
+        <CodeBlock language="css">{cssCode}</CodeBlock>
+      </div>
+      <div>
+        <p className="text-xs text-muted-foreground mb-2">With line numbers</p>
+        <CodeBlock language="javascript" showLineNumbers>{jsCode}</CodeBlock>
+      </div>
+    </div>
+  ),
   "message-actions": (
     <div className="space-y-6">
       <div className="flex justify-end group">

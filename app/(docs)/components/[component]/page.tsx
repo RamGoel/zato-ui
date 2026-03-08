@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { getComponent, getAllComponents } from "@/lib/registry";
-import { highlight } from "@/lib/highlight";
-import { CodeBlock } from "@/components/ui/code-block";
+import { CodeBlock } from "@/components/kit/code-block";
 import { PreviewWrapper } from "./preview-wrapper";
 
 export function generateStaticParams() {
@@ -24,11 +23,6 @@ export default async function ComponentPage({
 
 <${component.name.replace(/\s/g, "")}>Your content</${component.name.replace(/\s/g, "")}>`;
 
-  const [codeHtml, usageHtml] = await Promise.all([
-    highlight(component.code),
-    highlight(usageCode),
-  ]);
-
   return (
     <div className="space-y-8">
       <div>
@@ -43,12 +37,12 @@ export default async function ComponentPage({
         <p className="text-muted-foreground mb-4">
           Copy to <code className="bg-muted px-1.5 py-0.5 rounded text-sm">components/ui/{component.file}</code>
         </p>
-        <CodeBlock html={codeHtml} code={component.code} />
+        <CodeBlock language="tsx">{component.code}</CodeBlock>
       </div>
 
       <div>
         <h2 className="text-xl font-semibold mb-4">Usage</h2>
-        <CodeBlock html={usageHtml} code={usageCode} />
+        <CodeBlock language="tsx">{usageCode}</CodeBlock>
       </div>
 
       {component.props.length > 0 && (
