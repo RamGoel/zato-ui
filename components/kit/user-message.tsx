@@ -3,17 +3,17 @@
  * @description Chat bubble for user messages with avatar, timestamp, status, and actions.
  * @css Add to your globals.css: @keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
  */
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Check, RotateCcw, Pencil, Copy } from "lucide-react";
-import { useState } from "react";
+import { MessageActions } from "./message-actions";
 
 interface UserMessageProps {
-  children: React.ReactNode;
+  children: string;
   className?: string;
   avatar?: string;
-  timestamp?: Date | string;
+  timestamp?: string;
   status?: "sending" | "sent" | "error";
   onRetry?: () => void;
   onEdit?: () => void;
@@ -28,21 +28,7 @@ export function UserMessage({
   onRetry,
   onEdit,
 }: UserMessageProps) {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = () => {
-    const text = typeof children === "string" ? children : "";
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const formatTime = (date: Date | string) => {
-    const d = typeof date === "string" ? new Date(date) : date;
-    return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  };
-
-  const isUrl = avatar?.startsWith("http");
+  const isAvatarUrl = avatar?.startsWith("http");
 
   return (
     <div className="flex justify-end gap-2 group">
@@ -60,45 +46,27 @@ export function UserMessage({
         </div>
         
         <div className="flex items-center gap-1 px-1">
-          <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-            {onEdit && (
-              <Button variant="ghost" size="icon-xs" onClick={onEdit} aria-label="Edit">
-                <Pencil className="h-3 w-3" />
-              </Button>
-            )}
-            <Button variant="ghost" size="icon-xs" onClick={handleCopy} aria-label="Copy">
-              {copied ? (
-                <Check className="h-3 w-3 text-green-500" />
-              ) : (
-                <Copy className="h-3 w-3" />
-              )}
-            </Button>
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+            <MessageActions 
+              content={children}
+              onEdit={onEdit}
+              onRetry={onRetry}
+              showRetry={status === "error"}
+            />
           </div>
           
           {timestamp && status !== "sending" && (
             <span className="text-[10px] text-muted-foreground">
-              {formatTime(timestamp)}
+              {timestamp}
             </span>
-          )}
-          
-          {status === "error" && onRetry && (
-            <Button 
-              variant="ghost" 
-              size="xs" 
-              onClick={onRetry}
-              className="text-destructive hover:text-destructive h-auto py-0.5 px-1.5"
-            >
-              <RotateCcw className="h-3 w-3" />
-              Retry
-            </Button>
           )}
         </div>
       </div>
       
       {avatar && (
         <Avatar>
-          {isUrl && <AvatarImage src={avatar} alt="User" />}
-          <AvatarFallback>{isUrl ? "U" : avatar}</AvatarFallback>
+          {isAvatarUrl && <AvatarImage src={avatar} alt="User" />}
+          <AvatarFallback>{isAvatarUrl ? "U" : avatar}</AvatarFallback>
         </Avatar>
       )}
     </div>
