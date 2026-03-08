@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# aui-kit
 
-## Getting Started
+AI-first UI components built on [shadcn/ui](https://ui.shadcn.com). Copy and paste into your project.
 
-First, run the development server:
+## Components
+
+- **User Message** - Chat bubble for user input
+- **AI Message** - Response bubble from AI
+- *Chat Input* - Coming soon
+- *Streaming Text* - Coming soon
+- *Code Block* - Coming soon
+- *Typing Indicator* - Coming soon
+
+## Installation
+
+1. Set up shadcn/ui in your project:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx shadcn@latest init
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Copy the components you need from `components/ui/`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```tsx
+import { UserMessage } from '@/components/ui/user-message'
 
-## Learn More
+function Chat() {
+  return (
+    <div>
+      <UserMessage>Hello, how can you help me?</UserMessage>
+    </div>
+  )
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+### With Vercel AI SDK
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```tsx
+import { useChat } from '@ai-sdk/react'
+import { UserMessage } from '@/components/ui/user-message'
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+function Chat() {
+  const { messages } = useChat()
+  
+  return messages.map(m => 
+    m.role === 'user' 
+      ? <UserMessage key={m.id}>{m.content}</UserMessage>
+      : <AiMessage key={m.id}>{m.content}</AiMessage>
+  )
+}
+```
 
-## Deploy on Vercel
+## Development
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm install
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open [http://localhost:3000](http://localhost:3000)
+
+## License
+
+MIT
