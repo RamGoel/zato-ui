@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Moon, Sun, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,14 +13,48 @@ import type { Navigation } from "@/lib/navigation";
 function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const ref = useRef<HTMLButtonElement>(null);
 
   useEffect(() => setMounted(true), []);
 
+  const toggleTheme = () => {
+    const newTheme = resolvedTheme === "dark" ? "light" : "dark";
+
+    if (!document.startViewTransition) {
+      setTheme(newTheme);
+      return;
+    }
+
+    const transition = document.startViewTransition(() => {
+      setTheme(newTheme);
+    });
+
+    transition.ready.then(() => {
+      const maxDim = Math.max(window.innerWidth, window.innerHeight);
+      const radius = Math.sqrt(2) * maxDim;
+
+      document.documentElement.animate(
+        {
+          clipPath: [
+            `circle(0px at 50% 100%)`,
+            `circle(${radius}px at 50% 100%)`,
+          ],
+        },
+        {
+          duration: 800,
+          easing: "ease-in-out",
+          pseudoElement: "::view-transition-new(root)",
+        }
+      );
+    });
+  };
+
   return (
     <Button
+      ref={ref}
       variant="ghost"
       size="icon"
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      onClick={toggleTheme}
       suppressHydrationWarning
     >
       {mounted ? (
