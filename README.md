@@ -40,9 +40,9 @@ npx zatoui add user-message agent-message chat-input typing-indicator
 ## Usage
 
 ```tsx
-import { ChatInput } from '@/components/kit/chat-input'
-import { AgentMessage } from '@/components/kit/agent-message'
-import { UserMessage } from '@/components/kit/user-message'
+import { ChatInput } from "@/components/kit/chat-input";
+import { AgentMessage } from "@/components/kit/agent-message";
+import { UserMessage } from "@/components/kit/user-message";
 
 function Chat() {
   return (
@@ -55,7 +55,7 @@ function Chat() {
       </AgentMessage>
       <ChatInput onSubmit={(data) => console.log(data)} />
     </div>
-  )
+  );
 }
 ```
 

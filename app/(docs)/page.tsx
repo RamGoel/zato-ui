@@ -6,12 +6,10 @@ export default function HomePage() {
     <div className="space-y-12">
       {/* Hero */}
       <div className="space-y-4">
-        <h1 className="text-4xl font-bold tracking-tight">
-          AI-first components for modern apps
-        </h1>
+        <h1 className="text-4xl font-bold tracking-tight">AI-first components for modern apps</h1>
         <p className="text-lg text-muted-foreground max-w-2xl">
-          Beautiful, accessible chat UI components built on shadcn/ui. 
-          Copy and paste into your project.
+          Beautiful, accessible chat UI components built on shadcn/ui. Copy and paste into your
+          project.
         </p>
       </div>
 
@@ -21,9 +19,7 @@ export default function HomePage() {
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Requirements</h2>
             <div>
-              <p className="text-muted-foreground mb-2">
-                Make sure you have shadcn/ui set up:
-              </p>
+              <p className="text-muted-foreground mb-2">Make sure you have shadcn/ui set up:</p>
               <CodeBlock language="bash">npx shadcn@latest init</CodeBlock>
             </div>
           </div>

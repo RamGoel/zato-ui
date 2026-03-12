@@ -5,9 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function PreviewWrapper({ slug }: { slug: string }) {
   const preview = previews[slug];
-  
+
   if (!preview) return null;
-  
+
   return (
     <Card>
       <CardHeader>
