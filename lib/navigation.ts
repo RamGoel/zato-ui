@@ -30,6 +30,7 @@ export function getNavigation(): Navigation {
   return {
     "Getting Started": [
       { href: "/", name: "Introduction" },
+      { href: "/skills", name: "Agent Skills" },
     ],
     Components: components,
     Primitives: primitives,

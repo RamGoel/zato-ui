@@ -5,6 +5,7 @@ import chalk from "chalk";
 import { add } from "./commands/add.js";
 import { list } from "./commands/list.js";
 import { init } from "./commands/init.js";
+import { addSkill } from "./commands/add-skill.js";
 
 const program = new Command();
 
@@ -27,5 +28,11 @@ program
   .command("list")
   .description("List all available components")
   .action(list);
+
+program
+  .command("add-skill")
+  .description("Add the zato agent skill to your project")
+  .option("--overwrite", "Overwrite existing skill file")
+  .action(addSkill);
 
 program.parse();
