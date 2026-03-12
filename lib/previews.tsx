@@ -17,20 +17,46 @@ function ChatInputPreview() {
     <div className="space-y-6">
       <div>
         <p className="text-xs text-muted-foreground mb-2">Default</p>
-        <ChatInput 
-          onSubmit={(data) => alert(`Text: ${data.text}\nFiles: ${data.files?.length || 0}\nAudio: ${data.audio ? 'yes' : 'no'}`)} 
+        <ChatInput
+          onSubmit={(data) =>
+            alert(
+              `Text: ${data.text}\nFiles: ${data.files?.length || 0}\nAudio: ${data.audio ? "yes" : "no"}`,
+            )
+          }
         />
       </div>
       <div>
         <p className="text-xs text-muted-foreground mb-2">With toggle modes (Web Search, Canvas)</p>
-        <ChatInput 
+        <ChatInput
           menuItems={[
-            { id: "web-search", label: "Web Search", icon: <Globe className="h-4 w-4" />, active: webSearch, onClick: () => setWebSearch(!webSearch) },
-            { id: "canvas", label: "Canvas", icon: <Brush className="h-4 w-4" />, active: canvas, onClick: () => setCanvas(!canvas) },
-            { id: "upload-image", label: "Upload image", icon: <ImageIcon className="h-4 w-4" />, onClick: () => alert("Upload image") },
-            { id: "upload-file", label: "Upload file", icon: <FileText className="h-4 w-4" />, onClick: () => alert("Upload file") },
+            {
+              id: "web-search",
+              label: "Web Search",
+              icon: <Globe className="h-4 w-4" />,
+              active: webSearch,
+              onClick: () => setWebSearch(!webSearch),
+            },
+            {
+              id: "canvas",
+              label: "Canvas",
+              icon: <Brush className="h-4 w-4" />,
+              active: canvas,
+              onClick: () => setCanvas(!canvas),
+            },
+            {
+              id: "upload-image",
+              label: "Upload image",
+              icon: <ImageIcon className="h-4 w-4" />,
+              onClick: () => alert("Upload image"),
+            },
+            {
+              id: "upload-file",
+              label: "Upload file",
+              icon: <FileText className="h-4 w-4" />,
+              onClick: () => alert("Upload file"),
+            },
           ]}
-          onSubmit={(data) => alert(`Text: ${data.text}`)} 
+          onSubmit={(data) => alert(`Text: ${data.text}`)}
         />
       </div>
       <div>
@@ -90,7 +116,7 @@ function AgentMessagePreview() {
   useEffect(() => {
     if (isStreaming && wordCount < words.length) {
       const timeout = setTimeout(() => {
-        setWordCount(prev => {
+        setWordCount((prev) => {
           const next = prev + 1;
           if (next >= words.length) {
             setIsStreaming(false);
@@ -158,7 +184,9 @@ export const previews: Record<string, React.ReactNode> = {
       </div>
       <div>
         <p className="text-xs text-muted-foreground mb-2">With line numbers</p>
-        <CodeBlock language="javascript" showLineNumbers>{jsCode}</CodeBlock>
+        <CodeBlock language="javascript" showLineNumbers>
+          {jsCode}
+        </CodeBlock>
       </div>
     </div>
   ),
@@ -170,10 +198,7 @@ export const previews: Record<string, React.ReactNode> = {
             How do I center a div?
           </div>
           <div className="opacity-100">
-            <MessageActions 
-              content="How do I center a div?" 
-              onEdit={() => alert("Edit clicked")} 
-            />
+            <MessageActions content="How do I center a div?" onEdit={() => alert("Edit clicked")} />
           </div>
         </div>
       </div>
@@ -184,9 +209,9 @@ export const previews: Record<string, React.ReactNode> = {
             You can use flexbox: display: flex; justify-content: center; align-items: center;
           </div>
           <div className="opacity-100">
-            <MessageActions 
-              content="You can use flexbox..." 
-              onRegenerate={() => alert("Regenerate clicked")} 
+            <MessageActions
+              content="You can use flexbox..."
+              onRegenerate={() => alert("Regenerate clicked")}
             />
           </div>
         </div>
@@ -195,27 +220,20 @@ export const previews: Record<string, React.ReactNode> = {
   ),
   "user-message": (
     <div className="space-y-4">
-      <UserMessage 
-        avatar="JD" 
-        timestamp="2:45 PM" 
+      <UserMessage
+        avatar="JD"
+        timestamp="2:45 PM"
         status="sent"
         onEdit={() => alert("Edit clicked")}
       >
         Hello, how can you help me today?
       </UserMessage>
-      
-      <UserMessage 
-        avatar="JD" 
-        status="sending"
-      >
+
+      <UserMessage avatar="JD" status="sending">
         This message is being sent...
       </UserMessage>
-      
-      <UserMessage 
-        avatar="JD" 
-        status="error"
-        onRetry={() => alert("Retrying...")}
-      >
+
+      <UserMessage avatar="JD" status="error" onRetry={() => alert("Retrying...")}>
         This message failed to send.
       </UserMessage>
     </div>

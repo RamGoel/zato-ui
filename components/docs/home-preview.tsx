@@ -30,7 +30,7 @@ export function HomePreview() {
         <UserMessage timestamp="2:45 PM" status="sent">
           How do I center a div in CSS?
         </UserMessage>
-        
+
         <AgentMessage timestamp="2:45 PM">
           {`Here are the main ways to **center a div**:
 
@@ -45,15 +45,25 @@ export function HomePreview() {
 You can also use \`place-items: center\` with CSS Grid!`}
         </AgentMessage>
 
-
         {showTyping && <TypingIndicator />}
 
         <div className="pt-2">
           <ChatInput
             placeholder="Try the input..."
             menuItems={[
-              { id: "web", label: "Web Search", icon: <Globe className="h-4 w-4" />, active: webSearch, onClick: () => setWebSearch(!webSearch) },
-              { id: "canvas", label: "Canvas", icon: <Brush className="h-4 w-4" />, onClick: () => {} },
+              {
+                id: "web",
+                label: "Web Search",
+                icon: <Globe className="h-4 w-4" />,
+                active: webSearch,
+                onClick: () => setWebSearch(!webSearch),
+              },
+              {
+                id: "canvas",
+                label: "Canvas",
+                icon: <Brush className="h-4 w-4" />,
+                onClick: () => {},
+              },
             ]}
             onSubmit={handleSubmit}
           />

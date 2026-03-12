@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import { Moon, Sun, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -12,10 +12,12 @@ import type { Navigation } from "@/lib/navigation";
 
 function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
   const ref = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => setMounted(true), []);
 
   const toggleTheme = () => {
     const newTheme = resolvedTheme === "dark" ? "light" : "dark";
@@ -35,30 +37,25 @@ function ThemeToggle() {
 
       document.documentElement.animate(
         {
-          clipPath: [
-            `circle(0px at 50% 100%)`,
-            `circle(${radius}px at 50% 100%)`,
-          ],
+          clipPath: [`circle(0px at 50% 100%)`, `circle(${radius}px at 50% 100%)`],
         },
         {
           duration: 800,
           easing: "ease-in-out",
           pseudoElement: "::view-transition-new(root)",
-        }
+        },
       );
     });
   };
 
   return (
-    <Button
-      ref={ref}
-      variant="ghost"
-      size="icon"
-      onClick={toggleTheme}
-      suppressHydrationWarning
-    >
+    <Button ref={ref} variant="ghost" size="icon" onClick={toggleTheme} suppressHydrationWarning>
       {mounted ? (
-        resolvedTheme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />
+        resolvedTheme === "dark" ? (
+          <Sun className="h-4 w-4" />
+        ) : (
+          <Moon className="h-4 w-4" />
+        )
       ) : (
         <div className="h-4 w-4" />
       )}
@@ -85,12 +82,14 @@ function Sidebar({ navigation }: { navigation: Navigation }) {
                     pathname === item.href
                       ? "bg-muted text-foreground"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
-                    item.status === "soon" && "pointer-events-none"
+                    item.status === "soon" && "pointer-events-none",
                   )}
                 >
                   <span>{item.name}</span>
                   {item.status === "soon" && (
-                    <Badge variant="outline" className="text-[10px] px-1.5 py-0">soon</Badge>
+                    <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                      soon
+                    </Badge>
                   )}
                 </Link>
               ))}
@@ -114,13 +113,17 @@ export function DocsLayout({
       <header className="border-b sticky top-0 bg-background/80 backdrop-blur-sm z-50">
         <div className="mx-auto max-w-6xl flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2">
-            <Link href="/" className="text-lg font-semibold">zato</Link>
-            <Badge variant="secondary" className="text-xs">beta</Badge>
+            <Link href="/" className="text-lg font-semibold">
+              zato
+            </Link>
+            <Badge variant="secondary" className="text-xs">
+              beta
+            </Badge>
           </div>
           <div className="flex items-center gap-2">
-            <a 
-              href="https://github.com/RamGoel/zato-ui" 
-              target="_blank" 
+            <a
+              href="https://github.com/RamGoel/zato-ui"
+              target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center size-8 rounded-lg hover:bg-muted transition-colors"
             >
@@ -134,9 +137,7 @@ export function DocsLayout({
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex gap-10">
           <Sidebar navigation={navigation} />
-          <main className="flex-1 min-w-0 py-10">
-            {children}
-          </main>
+          <main className="flex-1 min-w-0 py-10">{children}</main>
         </div>
       </div>
     </div>

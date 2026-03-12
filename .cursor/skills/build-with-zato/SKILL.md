@@ -36,8 +36,12 @@ If adding `user-message`, ensure `globals.css` includes:
 
 ```css
 @keyframes shimmer {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(100%); }
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
 }
 ```
 
@@ -52,12 +56,18 @@ The CLI appends this automatically, but verify if installing manually.
 ChatGPT-style input with auto-expand, file attachments, voice recording, and action menu.
 
 ```tsx
-import { ChatInput } from "@/components/kit/chat-input"
+import { ChatInput } from "@/components/kit/chat-input";
 
 <ChatInput
   placeholder="Ask anything..."
   menuItems={[
-    { id: "web", label: "Web Search", icon: <Globe className="h-4 w-4" />, active: webSearch, onClick: () => setWebSearch(!webSearch) },
+    {
+      id: "web",
+      label: "Web Search",
+      icon: <Globe className="h-4 w-4" />,
+      active: webSearch,
+      onClick: () => setWebSearch(!webSearch),
+    },
     { id: "canvas", label: "Canvas", icon: <Brush className="h-4 w-4" />, onClick: () => {} },
   ]}
   onSubmit={(data) => {
@@ -66,7 +76,7 @@ import { ChatInput } from "@/components/kit/chat-input"
     // data.audio — Blob voice recording
   }}
   disabled={false}
-/>
+/>;
 ```
 
 **Props**: `placeholder?`, `disabled?`, `className?`, `menuItems?`, `onSubmit`
@@ -80,7 +90,7 @@ import { ChatInput } from "@/components/kit/chat-input"
 AI response bubble with markdown rendering, streaming cursor, and actions.
 
 ```tsx
-import { AgentMessage } from "@/components/kit/agent-message"
+import { AgentMessage } from "@/components/kit/agent-message";
 
 <AgentMessage
   avatar="AI"
@@ -89,7 +99,7 @@ import { AgentMessage } from "@/components/kit/agent-message"
   onRegenerate={() => regenerate()}
 >
   {responseText}
-</AgentMessage>
+</AgentMessage>;
 ```
 
 **Props**: `children` (string — rendered as markdown), `avatar?`, `timestamp?`, `isStreaming?`, `isError?`, `className?`, `onRegenerate?`
@@ -104,7 +114,7 @@ import { AgentMessage } from "@/components/kit/agent-message"
 User chat bubble with status states and actions.
 
 ```tsx
-import { UserMessage } from "@/components/kit/user-message"
+import { UserMessage } from "@/components/kit/user-message";
 
 <UserMessage
   avatar="JD"
@@ -114,7 +124,7 @@ import { UserMessage } from "@/components/kit/user-message"
   onRetry={() => handleRetry()}
 >
   How do I center a div?
-</UserMessage>
+</UserMessage>;
 ```
 
 **Props**: `children` (string), `avatar?`, `timestamp?`, `status?`, `className?`, `onRetry?`, `onEdit?`
@@ -128,9 +138,9 @@ import { UserMessage } from "@/components/kit/user-message"
 Animated bouncing dots showing the AI is thinking.
 
 ```tsx
-import { TypingIndicator } from "@/components/kit/typing-indicator"
+import { TypingIndicator } from "@/components/kit/typing-indicator";
 
-<TypingIndicator avatar="AI" />
+<TypingIndicator avatar="AI" />;
 ```
 
 **Props**: `avatar?`, `className?`
@@ -140,11 +150,11 @@ import { TypingIndicator } from "@/components/kit/typing-indicator"
 Syntax-highlighted code with copy button. Used automatically inside AgentMessage for fenced code blocks, but also usable standalone.
 
 ```tsx
-import { CodeBlock } from "@/components/kit/code-block"
+import { CodeBlock } from "@/components/kit/code-block";
 
 <CodeBlock language="typescript" showLineNumbers>
   {codeString}
-</CodeBlock>
+</CodeBlock>;
 ```
 
 **Props**: `children` (string), `language?`, `showLineNumbers?`, `className?`
@@ -157,13 +167,9 @@ import { CodeBlock } from "@/components/kit/code-block"
 Action buttons (copy, edit, regenerate, retry) shared by UserMessage and AgentMessage. Rarely used directly — it's embedded in the message components.
 
 ```tsx
-import { MessageActions } from "@/components/kit/message-actions"
+import { MessageActions } from "@/components/kit/message-actions";
 
-<MessageActions
-  content="Text to copy"
-  onEdit={() => {}}
-  onRegenerate={() => {}}
-/>
+<MessageActions content="Text to copy" onEdit={() => {}} onRegenerate={() => {}} />;
 ```
 
 **Props**: `content`, `onEdit?`, `onRetry?`, `onRegenerate?`, `showRetry?`
@@ -175,29 +181,29 @@ import { MessageActions } from "@/components/kit/message-actions"
 ### Full chat page
 
 ```tsx
-"use client"
+"use client";
 
-import { useState } from "react"
-import { ChatInput } from "@/components/kit/chat-input"
-import { AgentMessage } from "@/components/kit/agent-message"
-import { UserMessage } from "@/components/kit/user-message"
-import { TypingIndicator } from "@/components/kit/typing-indicator"
+import { useState } from "react";
+import { ChatInput } from "@/components/kit/chat-input";
+import { AgentMessage } from "@/components/kit/agent-message";
+import { UserMessage } from "@/components/kit/user-message";
+import { TypingIndicator } from "@/components/kit/typing-indicator";
 
-type Message = { role: "user" | "agent"; content: string; status?: "sending" | "sent" | "error" }
+type Message = { role: "user" | "agent"; content: string; status?: "sending" | "sent" | "error" };
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState<Message[]>([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(data: { text: string }) {
-    const userMsg: Message = { role: "user", content: data.text, status: "sent" }
-    setMessages(prev => [...prev, userMsg])
-    setIsLoading(true)
+    const userMsg: Message = { role: "user", content: data.text, status: "sent" };
+    setMessages((prev) => [...prev, userMsg]);
+    setIsLoading(true);
 
     // Call your AI API, stream tokens into agentMsg.content
     // ...
 
-    setIsLoading(false)
+    setIsLoading(false);
   }
 
   return (
@@ -205,10 +211,14 @@ export default function ChatPage() {
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((msg, i) =>
           msg.role === "user" ? (
-            <UserMessage key={i} avatar="U" status={msg.status}>{msg.content}</UserMessage>
+            <UserMessage key={i} avatar="U" status={msg.status}>
+              {msg.content}
+            </UserMessage>
           ) : (
-            <AgentMessage key={i} avatar="AI">{msg.content}</AgentMessage>
-          )
+            <AgentMessage key={i} avatar="AI">
+              {msg.content}
+            </AgentMessage>
+          ),
         )}
         {isLoading && <TypingIndicator avatar="AI" />}
       </div>
@@ -216,41 +226,41 @@ export default function ChatPage() {
         <ChatInput onSubmit={handleSubmit} disabled={isLoading} />
       </div>
     </div>
-  )
+  );
 }
 ```
 
 ### Streaming pattern
 
 ```tsx
-const [streamText, setStreamText] = useState("")
-const [isStreaming, setIsStreaming] = useState(false)
+const [streamText, setStreamText] = useState("");
+const [isStreaming, setIsStreaming] = useState(false);
 
 async function streamResponse(prompt: string) {
-  setIsStreaming(true)
-  setStreamText("")
+  setIsStreaming(true);
+  setStreamText("");
 
   const res = await fetch("/api/chat", {
     method: "POST",
     body: JSON.stringify({ prompt }),
-  })
+  });
 
-  const reader = res.body!.getReader()
-  const decoder = new TextDecoder()
+  const reader = res.body!.getReader();
+  const decoder = new TextDecoder();
 
   while (true) {
-    const { done, value } = await reader.read()
-    if (done) break
-    setStreamText(prev => prev + decoder.decode(value))
+    const { done, value } = await reader.read();
+    if (done) break;
+    setStreamText((prev) => prev + decoder.decode(value));
   }
 
-  setIsStreaming(false)
+  setIsStreaming(false);
 }
 
 // In JSX:
 <AgentMessage avatar="AI" isStreaming={isStreaming}>
   {streamText}
-</AgentMessage>
+</AgentMessage>;
 ```
 
 ### Chat with toggle modes
@@ -272,14 +282,14 @@ const [webSearch, setWebSearch] = useState(false)
 
 ## Dependency Map
 
-| Component | npm deps | Primitives | shadcn |
-|-----------|----------|------------|--------|
-| chat-input | — | — | button, dropdown-menu |
-| agent-message | react-markdown, remark-gfm, highlight.js | message-actions, code-block | avatar, button |
-| user-message | — | message-actions | avatar, button |
-| typing-indicator | — | — | avatar |
-| code-block | highlight.js | — | button |
-| message-actions | — | — | button |
+| Component        | npm deps                                 | Primitives                  | shadcn                |
+| ---------------- | ---------------------------------------- | --------------------------- | --------------------- |
+| chat-input       | —                                        | —                           | button, dropdown-menu |
+| agent-message    | react-markdown, remark-gfm, highlight.js | message-actions, code-block | avatar, button        |
+| user-message     | —                                        | message-actions             | avatar, button        |
+| typing-indicator | —                                        | —                           | avatar                |
+| code-block       | highlight.js                             | —                           | button                |
+| message-actions  | —                                        | —                           | button                |
 
 ## Key Conventions
 

@@ -4,7 +4,7 @@
  * @category primitives
  * @usage
  * import { CodeBlock } from "@/components/kit/code-block"
- * 
+ *
  * <CodeBlock language="typescript" showLineNumbers>
  *   {`function greet(name: string) {
  *   console.log(\`Hello, \${name}!\`);
@@ -34,10 +34,10 @@ function highlightBash(code: string): string {
     /^(\s*)(npx|npm|yarn|pnpm|bunx|bun|git|cd|mkdir|rm|cp|mv|cat|echo|curl|wget)(\s+)(\S+)?(.*)$/gm,
     (_, indent, cmd, space1, firstArg, rest) => {
       const highlightedCmd = `<span class="hljs-built_in">${cmd}</span>`;
-      const highlightedArg = firstArg ? `<span class="hljs-string">${firstArg}</span>` : '';
-      const highlightedRest = rest ? `<span class="hljs-comment">${rest}</span>` : '';
+      const highlightedArg = firstArg ? `<span class="hljs-string">${firstArg}</span>` : "";
+      const highlightedRest = rest ? `<span class="hljs-comment">${rest}</span>` : "";
       return `${indent}${highlightedCmd}${space1}${highlightedArg}${highlightedRest}`;
-    }
+    },
   );
 }
 
@@ -53,7 +53,12 @@ function highlight(code: string, lang?: string) {
   }
 }
 
-export function CodeBlock({ children, language, className, showLineNumbers = false }: CodeBlockProps) {
+export function CodeBlock({
+  children,
+  language,
+  className,
+  showLineNumbers = false,
+}: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
   const highlighted = useMemo(() => highlight(children, language), [children, language]);
 

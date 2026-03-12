@@ -2,12 +2,7 @@ import path from "path";
 import chalk from "chalk";
 import ora from "ora";
 import prompts from "prompts";
-import {
-  registry,
-  getComponent,
-  getAllComponents,
-  resolveDependencies,
-} from "../registry.js";
+import { registry, getComponent, getAllComponents, resolveDependencies } from "../registry.js";
 import {
   writeFile,
   fileExists,
@@ -53,9 +48,7 @@ export async function add(componentNames: string[]) {
   const hasUtils = await hasUtilsFile();
   if (!hasUtils) {
     console.log(
-      chalk.yellow(
-        "Warning: lib/utils.ts not found. Run `npx shadcn@latest init` first."
-      )
+      chalk.yellow("Warning: lib/utils.ts not found. Run `npx shadcn@latest init` first."),
     );
     const { proceed } = await prompts({
       type: "confirm",
@@ -111,10 +104,10 @@ export async function add(componentNames: string[]) {
     try {
       await runShadcnAdd(Array.from(allShadcnDeps));
       spinner.succeed("shadcn/ui components installed");
-    } catch (error) {
+    } catch {
       spinner.fail("Failed to install shadcn/ui components");
       console.log(
-        chalk.yellow(`Run manually: npx shadcn@latest add ${Array.from(allShadcnDeps).join(" ")}`)
+        chalk.yellow(`Run manually: npx shadcn@latest add ${Array.from(allShadcnDeps).join(" ")}`),
       );
     }
   }
@@ -124,11 +117,9 @@ export async function add(componentNames: string[]) {
     try {
       await installDependencies(Array.from(allNpmDeps));
       spinner.succeed("NPM dependencies installed");
-    } catch (error) {
+    } catch {
       spinner.fail("Failed to install dependencies");
-      console.log(
-        chalk.yellow(`Run manually: npm install ${Array.from(allNpmDeps).join(" ")}`)
-      );
+      console.log(chalk.yellow(`Run manually: npm install ${Array.from(allNpmDeps).join(" ")}`));
     }
   }
 
@@ -174,9 +165,5 @@ export async function add(componentNames: string[]) {
   const firstComponent = componentNames[0];
   const comp = getComponent(firstComponent)!;
   const importName = comp.name.replace(/\s/g, "");
-  console.log(
-    chalk.cyan(
-      `  import { ${importName} } from "@/components/kit/${firstComponent}"`
-    )
-  );
+  console.log(chalk.cyan(`  import { ${importName} } from "@/components/kit/${firstComponent}"`));
 }

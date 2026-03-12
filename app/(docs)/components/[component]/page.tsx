@@ -38,7 +38,10 @@ export default async function ComponentPage({
       <div>
         <h2 className="text-xl font-semibold mb-4">Installation</h2>
         <p className="text-muted-foreground mb-4">
-          Copy to <code className="bg-muted px-1.5 py-0.5 rounded text-sm">components/kit/{component.file}</code>
+          Copy to{" "}
+          <code className="bg-muted px-1.5 py-0.5 rounded text-sm">
+            components/kit/{component.file}
+          </code>
         </p>
         <CodeBlock language="tsx">{component.code}</CodeBlock>
       </div>

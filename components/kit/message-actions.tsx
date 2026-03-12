@@ -4,7 +4,7 @@
  * @category primitives
  * @usage
  * import { MessageActions } from "@/components/kit/message-actions"
- * 
+ *
  * <MessageActions
  *   content="Message text to copy"
  *   onEdit={() => console.log("edit")}
@@ -28,7 +28,13 @@ interface MessageActionsProps {
 const iconBtnClass = "cursor-pointer text-muted-foreground";
 const iconClass = "h-3 w-3";
 
-export function MessageActions({ content, onEdit, onRetry, onRegenerate, showRetry = false }: MessageActionsProps) {
+export function MessageActions({
+  content,
+  onEdit,
+  onRetry,
+  onRegenerate,
+  showRetry = false,
+}: MessageActionsProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(() => {
@@ -40,23 +46,50 @@ export function MessageActions({ content, onEdit, onRetry, onRegenerate, showRet
   return (
     <div className="flex items-center gap-0.5">
       {onEdit && (
-        <Button variant="ghost" size="icon-xs" onClick={onEdit} aria-label="Edit" className={iconBtnClass}>
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          onClick={onEdit}
+          aria-label="Edit"
+          className={iconBtnClass}
+        >
           <Pencil className={iconClass} />
         </Button>
       )}
-      
-      <Button variant="ghost" size="icon-xs" onClick={handleCopy} aria-label="Copy" className={iconBtnClass}>
-        {copied ? <Check className={`${iconClass} text-green-500`} /> : <Copy className={iconClass} />}
+
+      <Button
+        variant="ghost"
+        size="icon-xs"
+        onClick={handleCopy}
+        aria-label="Copy"
+        className={iconBtnClass}
+      >
+        {copied ? (
+          <Check className={`${iconClass} text-green-500`} />
+        ) : (
+          <Copy className={iconClass} />
+        )}
       </Button>
 
       {onRegenerate && (
-        <Button variant="ghost" size="icon-xs" onClick={onRegenerate} aria-label="Regenerate" className={iconBtnClass}>
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          onClick={onRegenerate}
+          aria-label="Regenerate"
+          className={iconBtnClass}
+        >
           <RefreshCw className={iconClass} />
         </Button>
       )}
 
       {showRetry && onRetry && (
-        <Button variant="ghost" size="xs" onClick={onRetry} className="text-destructive hover:text-destructive h-auto py-0.5 px-1.5 cursor-pointer">
+        <Button
+          variant="ghost"
+          size="xs"
+          onClick={onRetry}
+          className="text-destructive hover:text-destructive h-auto py-0.5 px-1.5 cursor-pointer"
+        >
           <RotateCcw className={iconClass} />
           Retry
         </Button>

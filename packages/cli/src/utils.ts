@@ -18,10 +18,7 @@ export async function fetchComponent(componentName: string): Promise<string> {
   return response.text();
 }
 
-export async function writeFile(
-  filePath: string,
-  content: string,
-): Promise<void> {
+export async function writeFile(filePath: string, content: string): Promise<void> {
   const dir = path.dirname(filePath);
   await fs.ensureDir(dir);
   await fs.writeFile(filePath, content, "utf-8");
@@ -69,10 +66,7 @@ export function getProjectRoot(): string {
 
 export async function hasUtilsFile(): Promise<boolean> {
   const root = getProjectRoot();
-  const paths = [
-    path.join(root, "lib", "utils.ts"),
-    path.join(root, "src", "lib", "utils.ts"),
-  ];
+  const paths = [path.join(root, "lib", "utils.ts"), path.join(root, "src", "lib", "utils.ts")];
   for (const p of paths) {
     if (await fileExists(p)) return true;
   }
@@ -112,7 +106,8 @@ export async function appendCssToGlobals(cssSnippets: string[]): Promise<boolean
 
   if (snippetsToAdd.length === 0) return true;
 
-  const newContent = content.trimEnd() + "\n\n/* Added by zatoui */\n" + snippetsToAdd.join("\n\n") + "\n";
+  const newContent =
+    content.trimEnd() + "\n\n/* Added by zatoui */\n" + snippetsToAdd.join("\n\n") + "\n";
   await fs.writeFile(globalsPath, newContent, "utf-8");
   return true;
 }

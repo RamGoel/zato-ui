@@ -14,7 +14,12 @@ export interface ComponentMeta {
   usage: string;
 }
 
-function parseMetadata(code: string): { name: string; description: string; category: "components" | "primitives"; usage: string } {
+function parseMetadata(code: string): {
+  name: string;
+  description: string;
+  category: "components" | "primitives";
+  usage: string;
+} {
   const nameMatch = code.match(/@name\s+(.+)/);
   const descMatch = code.match(/@description\s+(.+)/);
   const categoryMatch = code.match(/@category\s+(.+)/);
@@ -41,7 +46,7 @@ function parseProps(code: string): { name: string; type: string }[] {
   const startIndex = interfaceStart.index! + interfaceStart[0].length;
   let braceCount = 1;
   let endIndex = startIndex;
-  
+
   for (let i = startIndex; i < code.length && braceCount > 0; i++) {
     if (code[i] === "{") braceCount++;
     else if (code[i] === "}") braceCount--;
@@ -50,14 +55,14 @@ function parseProps(code: string): { name: string; type: string }[] {
 
   const interfaceBody = code.slice(startIndex, endIndex);
   const props: { name: string; type: string }[] = [];
-  
+
   let depth = 0;
   let currentProp = "";
-  
+
   for (const char of interfaceBody) {
     if (char === "{" || char === "(") depth++;
     else if (char === "}" || char === ")") depth--;
-    
+
     if (char === ";" && depth === 0) {
       const propMatch = currentProp.match(/^\s*(\w+)(\?)?:\s*([\s\S]+)/);
       if (propMatch) {
@@ -71,7 +76,7 @@ function parseProps(code: string): { name: string; type: string }[] {
       currentProp += char;
     }
   }
-  
+
   if (currentProp.trim()) {
     const propMatch = currentProp.match(/^\s*(\w+)(\?)?:\s*([\s\S]+)/);
     if (propMatch) {
@@ -81,16 +86,16 @@ function parseProps(code: string): { name: string; type: string }[] {
       });
     }
   }
-  
+
   return props;
 }
 
 export function getComponent(slug: string): ComponentMeta | null {
   const file = `${slug}.tsx`;
   const filePath = path.join(KIT_DIR, file);
-  
+
   if (!fs.existsSync(filePath)) return null;
-  
+
   const code = fs.readFileSync(filePath, "utf-8");
   const { name, description, category, usage } = parseMetadata(code);
   const props = parseProps(code);
@@ -102,7 +107,7 @@ export function getComponent(slug: string): ComponentMeta | null {
 
 export function getAllComponents(): ComponentMeta[] {
   const files = fs.readdirSync(KIT_DIR).filter((f) => f.endsWith(".tsx"));
-  
+
   return files
     .map((file) => getComponent(file.replace(".tsx", "")))
     .filter((c): c is ComponentMeta => c !== null);
